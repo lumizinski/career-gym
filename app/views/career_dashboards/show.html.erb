@@ -38,7 +38,10 @@
           <% user_skills.each do |user_skill| %>
             <tr>
               <td><%= user_skill.skill.name %></td>
-              <td aria-label="Level <%= user_skill.level %> out of 10"><%= level_bar(user_skill.level) %></td>
+              <td>
+                <span aria-hidden="true"><%= level_bar(user_skill.level) %></span>
+                <span>Level <%= user_skill.level %> out of 10</span>
+              </td>
               <td><%= user_skill.level %>/10</td>
               <td><%= user_skill.confidence %>/10</td>
               <td><%= link_to "Edit", edit_user_skill_path(user_skill) %></td>

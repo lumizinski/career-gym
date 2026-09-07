@@ -34,7 +34,11 @@ class UserSkillsController < ApplicationController
   end
 
   def set_available_skills
-    @available_skills = Skill.where.not(id: current_user.user_skills.where.not(id: @user_skill&.id).select(:skill_id)).order(:category, :name)
+    taken_skill_ids = current_user.user_skills.where.not(id: @user_skill&.id).select(:skill_id)
+    available_skills = Skill.where.not(id: taken_skill_ids)
+    available_skills = available_skills.or(Skill.where(id: @user_skill.skill_id)) if @user_skill&.skill_id
+
+    @available_skills = available_skills.order(:category, :name)
   end
 
   def ordered_user_skills

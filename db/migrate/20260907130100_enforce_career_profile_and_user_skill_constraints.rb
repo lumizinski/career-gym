@@ -8,6 +8,7 @@ class EnforceCareerProfileAndUserSkillConstraints < ActiveRecord::Migration[8.1]
     remove_index :career_profiles, :user_id if index_exists?(:career_profiles, :user_id)
     add_index :career_profiles, :user_id, unique: true unless index_exists?(:career_profiles, :user_id, unique: true)
 
+    remove_index :user_skills, column: [:user_id, :skill_id] if index_exists?(:user_skills, [:user_id, :skill_id], unique: false)
     add_index :user_skills, [:user_id, :skill_id], unique: true unless index_exists?(:user_skills, [:user_id, :skill_id], unique: true)
   end
 
