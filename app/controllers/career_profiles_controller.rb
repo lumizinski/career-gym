@@ -1,8 +1,9 @@
 class CareerProfilesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_career_profile, only: %i[show edit update]
+  before_action :set_career_profile, only: %i[edit update]
 
   def show
+    @career_profile = current_user.career_profile
   end
 
   def new
@@ -36,10 +37,9 @@ class CareerProfilesController < ApplicationController
 
   def set_career_profile
     @career_profile = current_user.career_profile
-    if @career_profile.blank?
-      redirect_to new_career_profile_path, alert: "Create your career profile first."
-      return
-    end
+    return if @career_profile.present?
+
+    redirect_to new_career_profile_path, alert: "Create your career profile first."
   end
 
   def career_profile_params

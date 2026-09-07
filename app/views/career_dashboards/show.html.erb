@@ -25,6 +25,7 @@
     <% @skills_by_category.each do |category, user_skills| %>
       <h3><%= category %></h3>
       <table>
+        <caption><%= category %> skills</caption>
         <thead>
           <tr>
             <th scope="col">Skill</th>
@@ -40,7 +41,7 @@
               <td><%= user_skill.skill.name %></td>
               <td>
                 <span aria-hidden="true"><%= level_bar(user_skill.level) %></span>
-                <span>Level <%= user_skill.level %> out of 10</span>
+                <span style="position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden;">Level <%= user_skill.level %> out of 10</span>
               </td>
               <td><%= user_skill.level %>/10</td>
               <td><%= user_skill.confidence %>/10</td>
