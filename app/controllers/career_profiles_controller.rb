@@ -36,7 +36,10 @@ class CareerProfilesController < ApplicationController
 
   def set_career_profile
     @career_profile = current_user.career_profile
-    redirect_to new_career_profile_path, alert: "Create your career profile first." if @career_profile.blank?
+    if @career_profile.blank?
+      redirect_to new_career_profile_path, alert: "Create your career profile first."
+      return
+    end
   end
 
   def career_profile_params

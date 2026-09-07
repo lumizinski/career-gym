@@ -25,13 +25,22 @@
     <% @skills_by_category.each do |category, user_skills| %>
       <h3><%= category %></h3>
       <table>
+        <thead>
+          <tr>
+            <th scope="col">Skill</th>
+            <th scope="col">Level Bar</th>
+            <th scope="col">Level</th>
+            <th scope="col">Confidence</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
         <tbody>
           <% user_skills.each do |user_skill| %>
             <tr>
               <td><%= user_skill.skill.name %></td>
               <td aria-label="Level <%= user_skill.level %> out of 10"><%= level_bar(user_skill.level) %></td>
               <td><%= user_skill.level %>/10</td>
-              <td>Confidence: <%= user_skill.confidence %>/10</td>
+              <td><%= user_skill.confidence %>/10</td>
               <td><%= link_to "Edit", edit_user_skill_path(user_skill) %></td>
             </tr>
           <% end %>
