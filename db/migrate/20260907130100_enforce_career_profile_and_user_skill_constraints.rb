@@ -1,6 +1,7 @@
 class EnforceCareerProfileAndUserSkillConstraints < ActiveRecord::Migration[8.1]
   def up
     sanitize_numeric_strings
+    deduplicate_records
 
     change_column :career_profiles, :years_of_experience, :integer, using: "NULLIF(years_of_experience, '')::integer"
 
@@ -48,6 +49,23 @@ class EnforceCareerProfileAndUserSkillConstraints < ActiveRecord::Migration[8.1]
       SET confidence = NULL
       WHERE confidence IS NOT NULL
         AND confidence !~ '^[0-9]+$';
+    SQL
+  end
+
+  def deduplicate_records
+    execute <<~SQL
+      DELETE FROM career_profiles older
+      USING career_profiles newer
+      WHERE older.user_id = newer.user_id
+        AND older.id < newer.id;
+    SQL
+
+    execute <<~SQL
+      DELETE FROM user_skills older
+      USING user_skills newer
+      WHERE older.user_id = newer.user_id
+        AND older.skill_id = newer.skill_id
+        AND older.id < newer.id;
     SQL
   end
 end

@@ -29,7 +29,6 @@
         <thead>
           <tr>
             <th scope="col">Skill</th>
-            <th scope="col">Level Bar</th>
             <th scope="col">Level</th>
             <th scope="col">Confidence</th>
             <th scope="col">Actions</th>
@@ -39,8 +38,10 @@
           <% user_skills.each do |user_skill| %>
             <tr>
               <td><%= user_skill.skill.name %></td>
-              <td aria-hidden="true"><%= level_bar(user_skill.level) %></td>
-              <td><%= user_skill.level %>/10</td>
+              <td>
+                <span aria-hidden="true"><%= level_bar(user_skill.level) %></span>
+                <span><%= user_skill.level %>/10</span>
+              </td>
               <td><%= user_skill.confidence %>/10</td>
               <td><%= link_to "Edit", edit_user_skill_path(user_skill) %></td>
             </tr>
