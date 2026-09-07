@@ -21,10 +21,10 @@
 
   <body>
     <% if notice.present? %>
-      <p style="color: green"><%= notice %></p>
+      <p role="status" aria-live="polite" style="color: green"><%= notice %></p>
     <% end %>
     <% if alert.present? %>
-      <p style="color: red"><%= alert %></p>
+      <p role="alert" aria-live="assertive" style="color: red"><%= alert %></p>
     <% end %>
 
     <% if user_signed_in? %>

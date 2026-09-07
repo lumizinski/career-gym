@@ -41,6 +41,15 @@ RSpec.describe "CareerProfiles", type: :request do
       expect(profile.reload.current_role).to eq("Senior Backend Engineer")
       expect(profile.years_of_experience).to eq(9)
     end
+
+    it "redirects edit to new when profile does not exist" do
+      get edit_career_profile_path
+
+      expect(response).to redirect_to(new_career_profile_path)
+      follow_redirect!
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("Create Career Profile")
+    end
   end
 
   describe "authorization" do

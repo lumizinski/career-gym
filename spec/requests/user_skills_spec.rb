@@ -54,6 +54,22 @@ RSpec.describe "UserSkills", type: :request do
       expect(response.body).to include("Edit Skill Assessment")
       expect(response.body).to include("Level must be less than or equal to 10")
     end
+
+    it "keeps current skill selectable on invalid update while excluding other taken skills" do
+      current_skill = create(:skill, name: "Rails", category: "Backend")
+      other_skill = create(:skill, name: "PostgreSQL", category: "Database")
+      free_skill = create(:skill, name: "System Design", category: "Architecture")
+
+      assessment = create(:user_skill, user: user, skill: current_skill, level: 5, confidence: 5)
+      create(:user_skill, user: user, skill: other_skill, level: 6, confidence: 6)
+
+      patch user_skill_path(assessment), params: { user_skill: { skill_id: current_skill.id, level: 11, confidence: 9 } }
+
+      expect(response).to have_http_status(:unprocessable_content)
+      expect(response.body).to include("Backend: Rails")
+      expect(response.body).to include("Architecture: System Design")
+      expect(response.body).not_to include("Database: PostgreSQL")
+    end
   end
 
   describe "authorization" do

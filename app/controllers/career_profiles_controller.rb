@@ -40,6 +40,7 @@ class CareerProfilesController < ApplicationController
     return if @career_profile.present?
 
     redirect_to new_career_profile_path, alert: "Create your career profile first."
+    return
   end
 
   def career_profile_params
