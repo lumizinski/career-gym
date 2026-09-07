@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_07_130100) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_07_133000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -47,7 +47,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_130100) do
     t.datetime "created_at", null: false
     t.string "name"
     t.datetime "updated_at", null: false
-    t.index ["name", "category"], name: "index_skills_on_name_and_category", unique: true
+    t.index "lower((name)::text), category", name: "index_skills_on_lower_name_and_category", unique: true
   end
 
   create_table "user_skills", force: :cascade do |t|
