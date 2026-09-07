@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @career_profile %>
+
+<div>
+  <%= link_to "Edit this career profile", edit_career_profile_path(@career_profile) %> |
+  <%= link_to "Back to career profiles", career_profiles_path %>
+
+  <%= button_to "Destroy this career profile", @career_profile, method: :delete %>
+</div>

@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  skill: one
+  level: MyString
+  confidence: MyString
+
+two:
+  user: two
+  skill: two
+  level: MyString
+  confidence: MyString

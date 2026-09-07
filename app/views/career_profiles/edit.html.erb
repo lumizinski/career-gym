@@ -1,0 +1,12 @@
+<% content_for :title, "Editing career profile" %>
+
+<h1>Editing career profile</h1>
+
+<%= render "form", career_profile: @career_profile %>
+
+<br>
+
+<div>
+  <%= link_to "Show this career profile", @career_profile %> |
+  <%= link_to "Back to career profiles", career_profiles_path %>
+</div>

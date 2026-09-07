@@ -1,0 +1,2 @@
+class JobSill < ApplicationRecord
+end
