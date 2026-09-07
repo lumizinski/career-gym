@@ -113,6 +113,7 @@ GEM
       railties (>= 7.0)
       responders
       warden (~> 1.2.3)
+    diff-lcs (1.6.2)
     dotenv (3.2.0)
     drb (2.2.3)
     ed25519 (1.4.0)
@@ -120,6 +121,11 @@ GEM
     erubi (1.13.1)
     et-orbi (1.4.2)
       tzinfo
+    factory_bot (6.6.0)
+      activesupport (>= 6.1.0)
+    factory_bot_rails (6.5.1)
+      factory_bot (~> 6.5)
+      railties (>= 6.1.0)
     ffi (1.17.4-aarch64-linux-gnu)
     ffi (1.17.4-aarch64-linux-musl)
     ffi (1.17.4-arm-linux-gnu)
@@ -211,7 +217,7 @@ GEM
       racc (~> 1.4)
     orm_adapter (0.5.0)
     ostruct (0.6.3)
-    parallel (2.1.0)
+    parallel (1.28.0)
     parser (3.3.12.0)
       ast (~> 2.4.1)
       racc
@@ -274,7 +280,7 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.4.2)
-    rbs (4.2.0)
+    rbs (4.1.3)
       logger
       prism (>= 1.6.0)
       tsort
@@ -290,6 +296,23 @@ GEM
       actionpack (>= 7.0)
       railties (>= 7.0)
     rexml (3.4.4)
+    rspec-core (3.13.6)
+      rspec-support (~> 3.13.0)
+    rspec-expectations (3.13.5)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-mocks (3.13.8)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.13.0)
+    rspec-rails (8.0.4)
+      actionpack (>= 7.2)
+      activesupport (>= 7.2)
+      railties (>= 7.2)
+      rspec-core (>= 3.13.0, < 5.0.0)
+      rspec-expectations (>= 3.13.0, < 5.0.0)
+      rspec-mocks (>= 3.13.0, < 5.0.0)
+      rspec-support (>= 3.13.0, < 5.0.0)
+    rspec-support (3.13.7)
     rubocop (1.90.0)
       json (>= 2.3)
       language_server-protocol (~> 3.17.0.2)
@@ -324,13 +347,13 @@ GEM
       logger
     rubyzip (3.6.0)
     securerandom (0.4.1)
-    selenium-webdriver (4.48.0)
+    selenium-webdriver (4.44.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
-    solid_cable (4.0.2)
+    solid_cable (3.0.12)
       actioncable (>= 7.2)
       activejob (>= 7.2)
       activerecord (>= 7.2)
@@ -405,6 +428,7 @@ DEPENDENCIES
   capybara
   debug
   devise (~> 5.0)
+  factory_bot_rails
   image_processing (~> 1.2)
   importmap-rails
   kamal
@@ -412,6 +436,7 @@ DEPENDENCIES
   propshaft
   puma (>= 5.0)
   rails (~> 8.1.3, >= 8.1.3.1)
+  rspec-rails
   rubocop-rails-omakase
   selenium-webdriver
   solid_cable
@@ -455,12 +480,15 @@ CHECKSUMS
   date (3.5.1) sha256=750d06384d7b9c15d562c76291407d89e368dda4d4fff957eb94962d325a0dc0
   debug (1.11.1) sha256=2e0b0ac6119f2207a6f8ac7d4a73ca8eb4e440f64da0a3136c30343146e952b6
   devise (5.0.4) sha256=d605f2b85854e74e56ee789e2d398702bc2d06e6bcd894717a670a3199c74cc1
+  diff-lcs (1.6.2) sha256=9ae0d2cba7d4df3075fe8cd8602a8604993efc0dfa934cff568969efb1909962
   dotenv (3.2.0) sha256=e375b83121ea7ca4ce20f214740076129ab8514cd81378161f11c03853fe619d
   drb (2.2.3) sha256=0b00d6fdb50995fe4a45dea13663493c841112e4068656854646f418fda13373
   ed25519 (1.4.0) sha256=16e97f5198689a154247169f3453ef4cfd3f7a47481fde0ae33206cdfdcac506
   erb (6.0.7) sha256=c5ca6dc25b0ef974a44dc8f59fe847577122483b1968a38dec305c60bf91ee92
   erubi (1.13.1) sha256=a082103b0885dbc5ecf1172fede897f9ebdb745a4b97a5e8dc63953db1ee4ad9
   et-orbi (1.4.2) sha256=bb555dae668419cb24caa2a293a170e58be6d4df1e017c51f5030bdc133cd20c
+  factory_bot (6.6.0) sha256=1fc1b3b5620ec980a6a27aec1b6ec8c250ca82962e970e8a40f93e8d388d4b89
+  factory_bot_rails (6.5.1) sha256=d3cc4851eae4dea8a665ec4a4516895045e710554d2b5ac9e68b94d351bc6d68
   ffi (1.17.4-aarch64-linux-gnu) sha256=b208f06f91ffd8f5e1193da3cae3d2ccfc27fc36fba577baf698d26d91c080df
   ffi (1.17.4-aarch64-linux-musl) sha256=9286b7a615f2676245283aef0a0a3b475ae3aae2bb5448baace630bb77b91f39
   ffi (1.17.4-arm-linux-gnu) sha256=d6dbddf7cb77bf955411af5f187a65b8cd378cb003c15c05697f5feee1cb1564
@@ -505,7 +533,7 @@ CHECKSUMS
   nokogiri (1.19.4-x86_64-linux-musl) sha256=17dfb7c1fa194ae02fbf7c51a7afc8d278045ab3fdacfd86f91d02d7b274470b
   orm_adapter (0.5.0) sha256=aa5d0be5d540cbb46d3a93e88061f4ece6a25f6e97d6a47122beb84fe595e9b9
   ostruct (0.6.3) sha256=95a2ed4a4bd1d190784e666b47b2d3f078e4a9efda2fccf18f84ddc6538ed912
-  parallel (2.1.0) sha256=b35258865c2e31134c5ecb708beaaf6772adf9d5efae28e93e99260877b09356
+  parallel (1.28.0) sha256=33e6de1484baf2524792d178b0913fc8eb94c628d6cfe45599ad4458c638c970
   parser (3.3.12.0) sha256=21a6d7f755d5a24dfbdc6e6b772e4e879a52e7631a88bc5a3a134606052c9828
   pg (1.6.3) sha256=1388d0563e13d2758c1089e35e973a3249e955c659592d10e5b77c468f628a99
   pg (1.6.3-aarch64-linux) sha256=0698ad563e02383c27510b76bf7d4cd2de19cd1d16a5013f375dd473e4be72ea
@@ -531,12 +559,17 @@ CHECKSUMS
   railties (8.1.3.1) sha256=2388a232579a00cefea4487de66c8553c3408c1300abdc6cf1799d86ffb04487
   rainbow (3.1.1) sha256=039491aa3a89f42efa1d6dec2fc4e62ede96eb6acd95e52f1ad581182b79bc6a
   rake (13.4.2) sha256=cb825b2bd5f1f8e91ca37bddb4b9aaf345551b4731da62949be002fa89283701
-  rbs (4.2.0) sha256=51f7b886dcc05bc09e10b901daa6a81829f6adc03101d6ca9ea4aac6103e0674
+  rbs (4.1.3) sha256=0c4474a9751cdc14364bfad0b3e53678323bbdc2c31683b0445932867dbab8c4
   rdoc (8.0.0) sha256=03bf8c08a9639658855a0cfd77c0abca8325c227693f7f33f82957811348c469
   regexp_parser (2.12.0) sha256=35a916a1d63190ab5c9009457136ae5f3c0c7512d60291d0d1378ba18ce08ebb
   reline (0.7.0) sha256=5b012d8e55dbf9d450f12bde2cf7d15ff546ae80b3f8f3b30e570d431815583d
   responders (3.2.1) sha256=c2772970cbda654c0e772d852e5a851e82cd8e96f5fa958650861ba75b8ffa84
   rexml (3.4.4) sha256=19e0a2c3425dfbf2d4fc1189747bdb2f849b6c5e74180401b15734bc97b5d142
+  rspec-core (3.13.6) sha256=a8823c6411667b60a8bca135364351dda34cd55e44ff94c4be4633b37d828b2d
+  rspec-expectations (3.13.5) sha256=33a4d3a1d95060aea4c94e9f237030a8f9eae5615e9bd85718fe3a09e4b58836
+  rspec-mocks (3.13.8) sha256=086ad3d3d17533f4237643de0b5c42f04b66348c28bf6b9c2d3f4a3b01af1d47
+  rspec-rails (8.0.4) sha256=06235692fc0892683d3d34977e081db867434b3a24ae0dd0c6f3516bad4e22df
+  rspec-support (3.13.7) sha256=0640e5570872aafefd79867901deeeeb40b0c9875a36b983d85f54fb7381c47c
   rubocop (1.90.0) sha256=9eb4c065b5c5154e4ef554c547972f3905a9eb6b53e657e580b6796b54bf8242
   rubocop-ast (1.50.0) sha256=b9ca88300da0803ee222ad20cdb30494c0a784eed06fdc35d254b06d662788db
   rubocop-performance (1.27.0) sha256=eeeb1374d062a368ee1c787b70eb0b0cc4b184cb1f8565f424760946146d61ce
@@ -546,8 +579,8 @@ CHECKSUMS
   ruby-vips (2.3.0) sha256=e685ec02c13969912debbd98019e50492e12989282da5f37d05f5471442f5374
   rubyzip (3.6.0) sha256=268994d44d62282d1cfd99bf10eae48d7267199158ad7ea3e1fee2da9458b695
   securerandom (0.4.1) sha256=cc5193d414a4341b6e225f0cb4446aceca8e50d5e1888743fac16987638ea0b1
-  selenium-webdriver (4.48.0) sha256=0c8376ebc8a0a4879343fe6fe6eccdcea76748611cd25de370b33eded2077a94
-  solid_cable (4.0.2) sha256=084636a67679ad00d23088b33c84047e614bcf41ee559db24b414d83cdc42d03
+  selenium-webdriver (4.44.0) sha256=6f1df072529af369589c46f0e01132952aabb250cfd683c274d74dc1eb5d8477
+  solid_cable (3.0.12) sha256=a168a54731a455d5627af48d8441ea3b554b8c1f6e6cd6074109de493e6b0460
   solid_cache (1.0.10) sha256=bc05a2fb3ac78a6f43cbb5946679cf9db67dd30d22939ededc385cb93e120d41
   solid_queue (1.7.0) sha256=6566b70b801d1c317c81bba7bcdd5677c019afac584a30374b4164002ca356d3
   sshkit (1.25.1) sha256=be3f10b9d6eb0b44d5eaba3f7cbe41bc6bb894bce4339688ac20124391455b78

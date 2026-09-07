@@ -1,58 +1,45 @@
 class CareerProfilesController < ApplicationController
-  before_action :set_career_profile, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!
+  before_action :set_career_profile, only: %i[show edit update]
 
-  # GET /career_profiles
-  def index
-    @career_profiles = CareerProfile.all
-  end
-
-  # GET /career_profiles/1
   def show
   end
 
-  # GET /career_profiles/new
   def new
-    @career_profile = CareerProfile.new
+    redirect_to edit_career_profile_path and return if current_user.career_profile.present?
+
+    @career_profile = current_user.build_career_profile
   end
 
-  # GET /career_profiles/1/edit
-  def edit
-  end
-
-  # POST /career_profiles
   def create
-    @career_profile = CareerProfile.new(career_profile_params)
+    @career_profile = current_user.build_career_profile(career_profile_params)
 
     if @career_profile.save
-      redirect_to @career_profile, notice: "Career profile was successfully created."
+      redirect_to career_dashboard_path, notice: "Career profile was successfully created."
     else
       render :new, status: :unprocessable_content
     end
   end
 
-  # PATCH/PUT /career_profiles/1
+  def edit
+  end
+
   def update
     if @career_profile.update(career_profile_params)
-      redirect_to @career_profile, notice: "Career profile was successfully updated.", status: :see_other
+      redirect_to career_dashboard_path, notice: "Career profile was successfully updated.", status: :see_other
     else
       render :edit, status: :unprocessable_content
     end
   end
 
-  # DELETE /career_profiles/1
-  def destroy
-    @career_profile.destroy!
-    redirect_to career_profiles_path, notice: "Career profile was successfully destroyed.", status: :see_other
+  private
+
+  def set_career_profile
+    @career_profile = current_user.career_profile
+    redirect_to new_career_profile_path, alert: "Create your career profile first." if @career_profile.blank?
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_career_profile
-      @career_profile = CareerProfile.find(params.expect(:id))
-    end
-
-    # Only allow a list of trusted parameters through.
-    def career_profile_params
-      params.expect(career_profile: [ :user_id, :current_role, :years_of_experience, :target_role, :target_market, :goals ])
-    end
+  def career_profile_params
+    params.expect(career_profile: [:current_role, :years_of_experience, :target_role, :target_market, :goals])
+  end
 end

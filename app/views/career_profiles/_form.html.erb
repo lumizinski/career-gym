@@ -1,8 +1,7 @@
-<%= form_with(model: career_profile) do |form| %>
+<%= form_with(model: career_profile, url: career_profile_path) do |form| %>
   <% if career_profile.errors.any? %>
     <div style="color: red">
-      <h2><%= pluralize(career_profile.errors.count, "error") %> prohibited this career_profile from being saved:</h2>
-
+      <h2><%= pluralize(career_profile.errors.count, "error") %> prohibited this career profile from being saved:</h2>
       <ul>
         <% career_profile.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -12,18 +11,13 @@
   <% end %>
 
   <div>
-    <%= form.label :user_id, style: "display: block" %>
-    <%= form.text_field :user_id %>
-  </div>
-
-  <div>
     <%= form.label :current_role, style: "display: block" %>
     <%= form.text_field :current_role %>
   </div>
 
   <div>
     <%= form.label :years_of_experience, style: "display: block" %>
-    <%= form.text_field :years_of_experience %>
+    <%= form.number_field :years_of_experience, min: 0 %>
   </div>
 
   <div>
@@ -38,7 +32,7 @@
 
   <div>
     <%= form.label :goals, style: "display: block" %>
-    <%= form.text_field :goals %>
+    <%= form.text_area :goals %>
   </div>
 
   <div>
