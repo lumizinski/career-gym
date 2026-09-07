@@ -25,4 +25,12 @@ RSpec.describe Skill, type: :model do
     expect(duplicate).not_to be_valid
     expect(duplicate.errors[:name]).to include("has already been taken")
   end
+
+  it "validates unique name within category case-insensitively" do
+    create(:skill, name: "Rails", category: "Backend")
+    duplicate = build(:skill, name: "rails", category: "Backend")
+
+    expect(duplicate).not_to be_valid
+    expect(duplicate.errors[:name]).to include("has already been taken")
+  end
 end

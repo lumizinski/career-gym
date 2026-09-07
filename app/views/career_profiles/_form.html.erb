@@ -1,4 +1,4 @@
-<%= form_with(model: career_profile, url: career_profile_path) do |form| %>
+<%= form_with(model: career_profile) do |form| %>
   <% if career_profile.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(career_profile.errors.count, "error") %> prohibited this career profile from being saved:</h2>
