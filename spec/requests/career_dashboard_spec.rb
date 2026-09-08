@@ -22,18 +22,20 @@ RSpec.describe "CareerDashboard", type: :request do
     viewer_skill = create(:skill, name: "Ruby", category: "Backend")
     other_skill = create(:skill, name: "Terraform", category: "Infrastructure")
 
-    create(:career_profile, user: viewer, current_role: "Senior Backend Engineer")
-    create(:career_profile, user: other_user, current_role: "Principal Platform Engineer")
+    create(:career_profile, user: viewer, current_role: "Senior Backend Engineer", goals: "Grow into a staff engineer role")
+    create(:career_profile, user: other_user, current_role: "Principal Platform Engineer", goals: "Own platform strategy across the company")
     create(:user_skill, user: viewer, skill: viewer_skill, level: 8, confidence: 8)
-    create(:user_skill, user: other_user, skill: other_skill, level: 2, confidence: 3)
+    create(:user_skill, user: other_user, skill: other_skill, level: 1, confidence: 3)
 
     sign_in viewer
     get "/dashboard"
 
     expect(response).to have_http_status(:ok)
     expect(response.body).to include("Senior Backend Engineer")
+    expect(response.body).to include("Grow into a staff engineer role")
     expect(response.body).to include("Ruby")
     expect(response.body).not_to include("Principal Platform Engineer")
-    expect(response.body).not_to include("Terraform")
+    expect(response.body).not_to include("Own platform strategy across the company")
+    expect(response.body).not_to include("1/10")
   end
 end
