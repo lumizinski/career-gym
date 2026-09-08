@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_07_010038) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_07_133000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -22,11 +22,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_010038) do
     t.string "target_role"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
-    t.string "years_of_experience"
-    t.index ["user_id"], name: "index_career_profiles_on_user_id"
+    t.integer "years_of_experience"
+    t.index ["user_id"], name: "index_career_profiles_on_user_id", unique: true
   end
 
-  create_table "job_sills", force: :cascade do |t|
+  create_table "job_skills", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "importance"
     t.string "job"
@@ -47,16 +47,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_010038) do
     t.datetime "created_at", null: false
     t.string "name"
     t.datetime "updated_at", null: false
+    t.index "lower((name)::text), category", name: "index_skills_on_lower_name_and_category", unique: true
   end
 
   create_table "user_skills", force: :cascade do |t|
-    t.string "confidence"
+    t.integer "confidence"
     t.datetime "created_at", null: false
-    t.string "level"
+    t.integer "level"
     t.bigint "skill_id", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["skill_id"], name: "index_user_skills_on_skill_id"
+    t.index ["user_id", "skill_id"], name: "index_user_skills_on_user_id_and_skill_id", unique: true
     t.index ["user_id"], name: "index_user_skills_on_user_id"
   end
 

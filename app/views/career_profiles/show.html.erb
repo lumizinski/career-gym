@@ -1,10 +1,13 @@
-<p style="color: green"><%= notice %></p>
+<% content_for :title, "Career Profile" %>
 
-<%= render @career_profile %>
+<% if @career_profile.present? %>
+  <h1>Career Profile</h1>
 
-<div>
-  <%= link_to "Edit this career profile", edit_career_profile_path(@career_profile) %> |
-  <%= link_to "Back to career profiles", career_profiles_path %>
+  <%= render @career_profile %>
 
-  <%= button_to "Destroy this career profile", @career_profile, method: :delete %>
-</div>
+  <p><%= link_to "Edit", edit_career_profile_path %></p>
+<% else %>
+  <h1>Career Profile</h1>
+  <p>You have not created a career profile yet.</p>
+  <p><%= link_to "Create Career Profile", new_career_profile_path %></p>
+<% end %>

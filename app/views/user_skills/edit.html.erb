@@ -1,12 +1,34 @@
-<% content_for :title, "Editing user skill" %>
+<% content_for :title, "Edit Skill Assessment" %>
 
-<h1>Editing user skill</h1>
+<h1>Edit Skill Assessment</h1>
 
-<%= render "form", user_skill: @user_skill %>
+<%= form_with(model: @user_skill) do |form| %>
+  <% if @user_skill.errors.any? %>
+    <div style="color: red">
+      <ul>
+        <% @user_skill.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
 
-<br>
+  <div>
+    <%= form.label :skill_id, "Skill", style: "display: block" %>
+    <%= form.collection_select :skill_id, @available_skills, :id, ->(skill) { "#{skill.category}: #{skill.name}" } %>
+  </div>
 
-<div>
-  <%= link_to "Show this user skill", @user_skill %> |
-  <%= link_to "Back to user skills", user_skills_path %>
-</div>
+  <div>
+    <%= form.label :level, style: "display: block" %>
+    <%= form.number_field :level, in: 1..10 %>
+  </div>
+
+  <div>
+    <%= form.label :confidence, style: "display: block" %>
+    <%= form.number_field :confidence, in: 1..10 %>
+  </div>
+
+  <div>
+    <%= form.submit "Update Skill" %>
+  </div>
+<% end %>

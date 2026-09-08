@@ -1,0 +1,89 @@
+<% content_for :title, "Career Dashboard" %>
+
+<h1>Career Gym</h1>
+
+<section>
+  <h2>Career Profile</h2>
+
+  <% if @career_profile.present? %>
+    <p><strong><%= @career_profile.current_role %></strong></p>
+    <p><%= @career_profile.years_of_experience %> years experience</p>
+    <p>Target: <%= @career_profile.target_role %></p>
+    <p>Market: <%= @career_profile.target_market %></p>
+    <p>Goals: <%= @career_profile.goals %></p>
+    <p><%= link_to "Edit Career Profile", edit_career_profile_path %></p>
+  <% else %>
+    <p>You have not created your career profile yet.</p>
+    <p><%= link_to "Create Career Profile", new_career_profile_path %></p>
+  <% end %>
+</section>
+
+<section>
+  <h2>Skills</h2>
+
+  <% if @skills_by_category.present? %>
+    <% @skills_by_category.each do |category, user_skills| %>
+      <h3><%= category %></h3>
+      <table>
+        <caption><%= category %> skills</caption>
+        <thead>
+          <tr>
+            <th scope="col">Skill</th>
+            <th scope="col">Level</th>
+            <th scope="col">Confidence</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% user_skills.each do |user_skill| %>
+            <tr>
+              <td><%= user_skill.skill.name %></td>
+              <td>
+                <span aria-hidden="true"><%= level_bar(user_skill.level) %></span>
+                <span><%= user_skill.level %>/10</span>
+              </td>
+              <td><%= user_skill.confidence %>/10</td>
+              <td><%= link_to "Edit", edit_user_skill_path(user_skill) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  <% else %>
+    <p>No skills assessed yet.</p>
+  <% end %>
+</section>
+
+<section>
+  <h3>Add Skill Assessment</h3>
+  <%= form_with model: @user_skill, url: user_skills_path do |form| %>
+    <% if @user_skill.errors.any? %>
+      <div style="color: red">
+        <ul>
+          <% @user_skill.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div>
+      <%= form.label :skill_id, "Skill", style: "display: block" %>
+      <%= form.collection_select :skill_id, @available_skills, :id, ->(skill) { "#{skill.category}: #{skill.name}" }, prompt: "Select a skill" %>
+    </div>
+
+    <div>
+      <%= form.label :level, style: "display: block" %>
+      <%= form.number_field :level, in: 1..10 %>
+    </div>
+
+    <div>
+      <%= form.label :confidence, style: "display: block" %>
+      <%= form.number_field :confidence, in: 1..10 %>
+    </div>
+
+    <div>
+      <%= form.submit "Add Skill" %>
+    </div>
+  <% end %>
+</section>

@@ -1,9 +1,13 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+skills_by_category = {
+  "Backend" => ["Ruby", "Rails", "API Design", "Background Jobs"],
+  "Database" => ["PostgreSQL", "Advanced SQL", "Database Indexing", "Query Optimization"],
+  "Architecture" => ["System Design", "Distributed Systems", "Caching", "Messaging"],
+  "Cloud" => ["AWS", "Docker", "CI/CD"],
+  "Observability" => ["Metrics", "Logging", "Distributed Tracing"]
+}
+
+skills_by_category.each do |category, names|
+  names.each do |name|
+    Skill.find_or_create_by!(name: name, category: category)
+  end
+end
