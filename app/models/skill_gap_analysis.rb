@@ -41,7 +41,7 @@ class SkillGapAnalysis
 
   def strengths
     skill_gaps.select(&:strength?).sort_by do |skill_gap|
-      [JobSkill.importance_rank(skill_gap.importance), skill_gap.skill.name]
+      [ JobSkill.importance_rank(skill_gap.importance), skill_gap.skill.name ]
     end
   end
 
@@ -49,7 +49,7 @@ class SkillGapAnalysis
 
   def ordered_gaps
     skill_gaps.select(&:gap?).sort_by do |skill_gap|
-      [-skill_gap.gap, JobSkill.importance_rank(skill_gap.importance), skill_gap.skill.name]
+      [ -skill_gap.gap, JobSkill.importance_rank(skill_gap.importance), skill_gap.skill.name ]
     end
   end
 
@@ -62,7 +62,7 @@ class SkillGapAnalysis
         skill: job_skill.skill,
         current_level: current_level,
         required_level: required_level,
-        gap: [required_level - current_level, 0].max,
+        gap: [ required_level - current_level, 0 ].max,
         importance: job_skill.importance
       )
     end
@@ -77,9 +77,11 @@ class SkillGapAnalysis
   def target_job
     @target_job ||= begin
       role = target_role
-      next if role.blank?
-
-      Job.includes(job_skills: :skill).find_by(title: role)
+      if role.blank?
+        nil
+      else
+        Job.includes(job_skills: :skill).find_by(title: role)
+      end
     end
   end
 

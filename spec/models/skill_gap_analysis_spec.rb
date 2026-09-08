@@ -29,7 +29,7 @@ RSpec.describe SkillGapAnalysis, type: :model do
     create(:job_skill, job: job, skill: skill, required_level: 8, importance: "Critical")
     create(:user_skill, user: user, skill: skill, level: 2, confidence: 6)
 
-    expect(analysis.critical_gaps.map { |gap| gap.skill.name }).to eq(["System Design"])
+    expect(analysis.critical_gaps.map { |gap| gap.skill.name }).to eq([ "System Design" ])
   end
 
   it "treats matching the requirement as a strength" do
@@ -40,7 +40,7 @@ RSpec.describe SkillGapAnalysis, type: :model do
     create(:user_skill, user: user, skill: skill, level: 7, confidence: 6)
 
     expect(analysis.other_gaps).to be_empty
-    expect(analysis.strengths.map { |gap| gap.skill.name }).to eq(["Ruby"])
+    expect(analysis.strengths.map { |gap| gap.skill.name }).to eq([ "Ruby" ])
   end
 
   it "treats exceeding the requirement as a strength" do
@@ -50,7 +50,7 @@ RSpec.describe SkillGapAnalysis, type: :model do
     create(:job_skill, job: job, skill: skill, required_level: 7, importance: "Medium")
     create(:user_skill, user: user, skill: skill, level: 9, confidence: 8)
 
-    expect(analysis.strengths.map { |gap| gap.skill.name }).to eq(["Rails"])
+    expect(analysis.strengths.map { |gap| gap.skill.name }).to eq([ "Rails" ])
   end
 
   it "uses a current level of zero when the user does not have the skill" do
@@ -88,7 +88,7 @@ RSpec.describe SkillGapAnalysis, type: :model do
     create(:user_skill, user: user, skill: system_design, level: 2, confidence: 6)
 
     expect(analysis.biggest_gap.skill.name).to eq("System Design")
-    expect(analysis.other_gaps.map { |gap| gap.skill.name }).to eq(["PostgreSQL"])
+    expect(analysis.other_gaps.map { |gap| gap.skill.name }).to eq([ "PostgreSQL" ])
   end
 
   it "uses importance as a secondary ordering for equal-sized gaps" do
@@ -101,6 +101,6 @@ RSpec.describe SkillGapAnalysis, type: :model do
     create(:user_skill, user: user, skill: aws, level: 5, confidence: 5)
     create(:user_skill, user: user, skill: caching, level: 5, confidence: 5)
 
-    expect(analysis.other_gaps.map { |gap| gap.skill.name }).to eq(["Caching", "AWS"])
+    expect(analysis.other_gaps.map { |gap| gap.skill.name }).to eq([ "Caching", "AWS" ])
   end
 end

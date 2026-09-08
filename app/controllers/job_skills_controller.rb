@@ -2,7 +2,7 @@ class JobSkillsController < ApplicationController
   before_action :set_job_skill, only: %i[show edit update destroy]
 
   def index
-    @job_skills = JobSkill.all
+    @job_skills = JobSkill.includes(:job, :skill).order("jobs.title ASC, skills.name ASC").references(:job, :skill)
   end
 
   def show
@@ -45,6 +45,6 @@ class JobSkillsController < ApplicationController
   end
 
   def job_skill_params
-    params.expect(job_skill: [:job, :skill, :importance])
+    params.expect(job_skill: [ :job_id, :skill_id, :required_level, :importance ])
   end
 end

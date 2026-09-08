@@ -11,18 +11,23 @@
   <% end %>
 
   <div>
-    <%= form.label :job, style: "display: block" %>
-    <%= form.text_field :job %>
+    <%= form.label :job_id, "Job", style: "display: block" %>
+    <%= form.collection_select :job_id, Job.order(:title), :id, :title, prompt: "Select a role" %>
   </div>
 
   <div>
-    <%= form.label :skill, style: "display: block" %>
-    <%= form.text_field :skill %>
+    <%= form.label :skill_id, "Skill", style: "display: block" %>
+    <%= form.collection_select :skill_id, Skill.order(:category, :name), :id, :name, prompt: "Select a skill" %>
+  </div>
+
+  <div>
+    <%= form.label :required_level, style: "display: block" %>
+    <%= form.number_field :required_level, in: 1..10 %>
   </div>
 
   <div>
     <%= form.label :importance, style: "display: block" %>
-    <%= form.text_field :importance %>
+    <%= form.select :importance, JobSkill::IMPORTANCE_ORDER.keys %>
   </div>
 
   <div>

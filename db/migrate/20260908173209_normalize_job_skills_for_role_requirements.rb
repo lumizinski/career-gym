@@ -12,7 +12,7 @@ class NormalizeJobSkillsForRoleRequirements < ActiveRecord::Migration[8.1]
     change_column_null :job_skills, :skill_id, false
     change_column_null :job_skills, :required_level, false
 
-    add_index :job_skills, [:job_id, :skill_id], unique: true
+    add_index :job_skills, [ :job_id, :skill_id ], unique: true
   end
 
   def down
@@ -28,7 +28,7 @@ class NormalizeJobSkillsForRoleRequirements < ActiveRecord::Migration[8.1]
         AND skills.id = job_skills.skill_id;
     SQL
 
-    remove_index :job_skills, column: [:job_id, :skill_id]
+    remove_index :job_skills, column: [ :job_id, :skill_id ]
 
     change_column_null :job_skills, :required_level, true
     change_column_null :job_skills, :skill_id, true
