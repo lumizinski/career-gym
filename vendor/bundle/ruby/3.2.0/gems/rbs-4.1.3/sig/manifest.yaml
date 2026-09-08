@@ -1,5 +1,0 @@
-dependencies:
-  - name: json
-  - name: optparse
-  - name: tsort
-  - name: rdoc
