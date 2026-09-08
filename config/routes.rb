@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :job_skills
   resources :jobs
   resources :skills
+  get "skill_gaps", to: "skill_gaps#index", as: :skill_gaps
 
   get "up" => "rails/health#show", as: :rails_health_check
 end

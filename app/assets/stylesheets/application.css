@@ -178,3 +178,55 @@ input {
 .dashboard-errors {
   color: #b11f1f;
 }
+
+
+.skill-gap-grid {
+  align-items: start;
+}
+
+.skill-gap-priority {
+  margin: 1.5rem 0;
+}
+
+.skill-gap-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.skill-gap-card {
+  padding: 1rem;
+  border: 1px solid #d8e1f0;
+  border-radius: 1rem;
+  background: #fbfcfe;
+}
+
+.skill-gap-card--priority {
+  border-color: #204ecf;
+  background: #eef4ff;
+}
+
+.skill-gap-card--strength {
+  background: #f2fbf5;
+}
+
+.skill-gap-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.skill-gap-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.skill-gap-metrics dt {
+  font-size: 0.875rem;
+  color: #5c6b8a;
+}
+
+.skill-gap-metrics dd {
+  margin: 0.25rem 0 0;
+  font-weight: 700;
+}
