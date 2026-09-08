@@ -2,16 +2,16 @@
 
 one:
   user: one
-  current_role: MyString
-  years_of_experience: MyString
-  target_role: MyString
-  target_market: MyString
-  goals: MyString
+  current_role: Senior Backend Engineer
+  years_of_experience: 8
+  target_role: Fixture Role One
+  target_market: International Remote
+  goals: Lead architecture decisions
 
 two:
   user: two
-  current_role: MyString
-  years_of_experience: MyString
-  target_role: MyString
-  target_market: MyString
-  goals: MyString
+  current_role: Platform Engineer
+  years_of_experience: 6
+  target_role: Fixture Role Two
+  target_market: Europe
+  goals: Improve distributed systems expertise
