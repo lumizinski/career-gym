@@ -1,6 +1,10 @@
 class UserSkill < ApplicationRecord
+  SKILL_GAP_LEVEL = 7
+
   belongs_to :user
   belongs_to :skill
+
+  scope :dashboard_order, -> { includes(:skill).joins(:skill).order("skills.category ASC, user_skills.level DESC, skills.name ASC") }
 
   validates :level, :confidence, presence: true, numericality: {
     only_integer: true,

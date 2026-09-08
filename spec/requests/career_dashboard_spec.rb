@@ -1,39 +1,41 @@
 require "rails_helper"
 
 RSpec.describe "CareerDashboard", type: :request do
-  it "requires authentication" do
-    get career_dashboard_path
+  it "redirects unauthenticated users" do
+    get "/dashboard"
 
     expect(response).to redirect_to(new_user_session_path)
   end
 
-  it "renders skills ordered by category then level" do
+  it "allows authenticated users to access /dashboard" do
     user = create(:user)
-    backend = create(:skill, name: "Rails", category: "Backend")
-    db_skill = create(:skill, name: "PostgreSQL", category: "Database")
-
-    create(:user_skill, user: user, skill: db_skill, level: 6, confidence: 6)
-    create(:user_skill, user: user, skill: backend, level: 9, confidence: 8)
 
     sign_in user
-    get career_dashboard_path
+    get "/dashboard"
 
     expect(response).to have_http_status(:ok)
-    expect(response.body.index("Backend")).to be < response.body.index("Database")
   end
 
-  it "renders higher level skills first within the same category" do
-    user = create(:user)
-    low_skill = create(:skill, name: "Ruby", category: "Backend")
-    high_skill = create(:skill, name: "Rails", category: "Backend")
+  it "only shows the signed-in user's career information" do
+    viewer = create(:user)
+    other_user = create(:user)
+    viewer_skill = create(:skill, name: "Ruby", category: "Backend")
+    other_skill = create(:skill, name: "Terraform", category: "Infrastructure")
 
-    create(:user_skill, user: user, skill: low_skill, level: 4, confidence: 5)
-    create(:user_skill, user: user, skill: high_skill, level: 8, confidence: 6)
+    create(:career_profile, user: viewer, current_role: "Senior Backend Engineer", goals: "Grow into a staff engineer role")
+    create(:career_profile, user: other_user, current_role: "Principal Platform Engineer", goals: "Own platform strategy across the company")
+    create(:user_skill, user: viewer, skill: viewer_skill, level: 8, confidence: 8)
+    create(:user_skill, user: other_user, skill: other_skill, level: 1, confidence: 3)
 
-    sign_in user
-    get career_dashboard_path
+    sign_in viewer
+    get "/dashboard"
 
     expect(response).to have_http_status(:ok)
-    expect(response.body.index("Rails")).to be < response.body.index("Ruby")
+    expect(response.body).to include("Senior Backend Engineer")
+    expect(response.body).to include("Grow into a staff engineer role")
+    expect(response.body).to include("Ruby")
+    expect(response.body).not_to include("Principal Platform Engineer")
+    expect(response.body).not_to include("Own platform strategy across the company")
+    expect(response.body).not_to include("1/10")
   end
 end
