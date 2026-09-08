@@ -10,8 +10,12 @@ class UserSkillsController < ApplicationController
       redirect_to career_dashboard_path, notice: "Skill assessment was successfully added."
     else
       @career_profile = current_user.career_profile
-      @user_skills = ordered_user_skills
+      @user_skills = ordered_user_skills.to_a
       @skills_by_category = @user_skills.group_by { |skill| skill.skill.category }
+      @skill_gaps = @user_skills.select { |user_skill| user_skill.level < UserSkill::SKILL_GAP_LEVEL }
+        .sort_by { |user_skill| [ user_skill.level, user_skill.skill.name ] }
+      @skills_count = @user_skills.size
+      @average_skill_level = @skills_count.positive? ? (@user_skills.sum(&:level).to_f / @skills_count).round(1) : nil
       render "career_dashboards/show", status: :unprocessable_content
     end
   end
@@ -42,7 +46,7 @@ class UserSkillsController < ApplicationController
   end
 
   def ordered_user_skills
-    current_user.user_skills.includes(:skill).joins(:skill).order("skills.category ASC, user_skills.level DESC, skills.name ASC")
+    current_user.user_skills.dashboard_order
   end
 
   def user_skill_params
