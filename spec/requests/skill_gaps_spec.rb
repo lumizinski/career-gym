@@ -14,14 +14,14 @@ RSpec.describe "SkillGaps", type: :request do
     viewer_profile = create(:career_profile, user: viewer, target_role: "Staff Backend Engineer")
     other_profile = create(:career_profile, user: other_user, target_role: "Principal Platform Engineer")
 
-    viewer_job = create(:job, title: viewer_profile.target_role)
-    other_job = create(:job, title: other_profile.target_role)
+    viewer_role = create(:role, title: viewer_profile.target_role)
+    other_role = create(:role, title: other_profile.target_role)
 
     viewer_skill = create(:skill, name: "System Design", category: "Architecture")
     other_skill = create(:skill, name: "Terraform", category: "Infrastructure")
 
-    create(:job_skill, job: viewer_job, skill: viewer_skill, required_level: 8, importance: "Critical")
-    create(:job_skill, job: other_job, skill: other_skill, required_level: 7, importance: "High")
+    create(:role_skill, role: viewer_role, skill: viewer_skill, required_level: 8, importance: "Critical")
+    create(:role_skill, role: other_role, skill: other_skill, required_level: 7, importance: "High")
     create(:user_skill, user: viewer, skill: viewer_skill, level: 2, confidence: 5)
     create(:user_skill, user: other_user, skill: other_skill, level: 1, confidence: 4)
 

@@ -1,4 +1,4 @@
-class JobSkill < ApplicationRecord
+class RoleSkill < ApplicationRecord
   IMPORTANCE_ORDER = {
     "Critical" => 0,
     "High" => 1,
@@ -6,7 +6,7 @@ class JobSkill < ApplicationRecord
     "Low" => 3
   }.freeze
 
-  belongs_to :job
+  belongs_to :role
   belongs_to :skill
 
   validates :importance, presence: true, inclusion: { in: IMPORTANCE_ORDER.keys }
@@ -15,7 +15,7 @@ class JobSkill < ApplicationRecord
     greater_than_or_equal_to: 1,
     less_than_or_equal_to: 10
   }
-  validates :skill_id, uniqueness: { scope: :job_id }
+  validates :skill_id, uniqueness: { scope: :role_id }
 
   def self.importance_rank(importance)
     IMPORTANCE_ORDER.fetch(importance, IMPORTANCE_ORDER.length)

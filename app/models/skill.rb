@@ -1,6 +1,6 @@
 class Skill < ApplicationRecord
-  has_many :job_skills, dependent: :restrict_with_exception
-  has_many :jobs, through: :job_skills
+  has_many :role_skills, dependent: :restrict_with_exception
+  has_many :roles, through: :role_skills
   has_many :user_skills, dependent: :restrict_with_exception
   has_many :users, through: :user_skills
 

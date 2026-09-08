@@ -6,17 +6,17 @@ RSpec.describe "Skill gap analysis", type: :system do
   it "shows the biggest gap, critical gaps, smaller gaps, and strengths" do
     user = create(:user)
     profile = create(:career_profile, user: user, target_role: "Staff Backend Engineer")
-    job = create(:job, title: profile.target_role)
+    role = create(:role, title: profile.target_role)
 
     system_design = create(:skill, name: "System Design", category: "Architecture")
     distributed_systems = create(:skill, name: "Distributed Systems", category: "Architecture")
     postgres = create(:skill, name: "PostgreSQL", category: "Database")
     ruby = create(:skill, name: "Ruby", category: "Backend")
 
-    create(:job_skill, job: job, skill: system_design, required_level: 8, importance: "Critical")
-    create(:job_skill, job: job, skill: distributed_systems, required_level: 7, importance: "Critical")
-    create(:job_skill, job: job, skill: postgres, required_level: 7, importance: "High")
-    create(:job_skill, job: job, skill: ruby, required_level: 7, importance: "Medium")
+    create(:role_skill, role: role, skill: system_design, required_level: 8, importance: "Critical")
+    create(:role_skill, role: role, skill: distributed_systems, required_level: 7, importance: "Critical")
+    create(:role_skill, role: role, skill: postgres, required_level: 7, importance: "High")
+    create(:role_skill, role: role, skill: ruby, required_level: 7, importance: "Medium")
 
     create(:user_skill, user: user, skill: system_design, level: 2, confidence: 4)
     create(:user_skill, user: user, skill: distributed_systems, level: 3, confidence: 4)

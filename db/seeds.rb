@@ -12,7 +12,7 @@ skills_by_category.each do |category, names|
   end
 end
 
-staff_backend_engineer = Job.find_or_initialize_by(title: "Staff Backend Engineer")
+staff_backend_engineer = Role.find_or_initialize_by(title: "Staff Backend Engineer")
 staff_backend_engineer.company = "Career Gym Benchmark"
 staff_backend_engineer.description = "Representative target role requirements for staff-level backend engineers."
 staff_backend_engineer.save!
@@ -32,8 +32,8 @@ requirements = [
 
 requirements.each do |name, category, required_level, importance|
   skill = Skill.find_or_create_by!(name: name, category: category)
-  job_skill = staff_backend_engineer.job_skills.find_or_initialize_by(skill: skill)
-  job_skill.required_level = required_level
-  job_skill.importance = importance
-  job_skill.save!
+  role_skill = staff_backend_engineer.role_skills.find_or_initialize_by(skill: skill)
+  role_skill.required_level = required_level
+  role_skill.importance = importance
+  role_skill.save!
 end

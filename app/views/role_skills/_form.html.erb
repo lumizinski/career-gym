@@ -1,9 +1,9 @@
-<%= form_with(model: job_skill) do |form| %>
-  <% if job_skill.errors.any? %>
+<%= form_with(model: role_skill) do |form| %>
+  <% if role_skill.errors.any? %>
     <div style="color: red">
-      <h2><%= pluralize(job_skill.errors.count, "error") %> prohibited this job skill from being saved:</h2>
+      <h2><%= pluralize(role_skill.errors.count, "error") %> prohibited this role skill from being saved:</h2>
       <ul>
-        <% job_skill.errors.each do |error| %>
+        <% role_skill.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
@@ -11,8 +11,8 @@
   <% end %>
 
   <div>
-    <%= form.label :job_id, "Job", style: "display: block" %>
-    <%= form.collection_select :job_id, Job.order(:title), :id, :title, prompt: "Select a role" %>
+    <%= form.label :role_id, "Role", style: "display: block" %>
+    <%= form.collection_select :role_id, Role.order(:title), :id, :title, prompt: "Select a role" %>
   </div>
 
   <div>
@@ -27,7 +27,7 @@
 
   <div>
     <%= form.label :importance, style: "display: block" %>
-    <%= form.select :importance, JobSkill::IMPORTANCE_ORDER.keys %>
+    <%= form.select :importance, RoleSkill::IMPORTANCE_ORDER.keys %>
   </div>
 
   <div>

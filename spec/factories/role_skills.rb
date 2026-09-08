@@ -1,6 +1,6 @@
 FactoryBot.define do
-  factory :job_skill do
-    association :job
+  factory :role_skill do
+    association :role
     association :skill
     required_level { 7 }
     importance { "High" }

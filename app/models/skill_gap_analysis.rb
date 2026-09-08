@@ -24,7 +24,7 @@ class SkillGapAnalysis
   end
 
   def required_skills?
-    target_job.present? && target_job.job_skills.exists?
+    target_role_record.present? && target_role_record.role_skills.exists?
   end
 
   def biggest_gap
@@ -41,7 +41,7 @@ class SkillGapAnalysis
 
   def strengths
     skill_gaps.select(&:strength?).sort_by do |skill_gap|
-      [ JobSkill.importance_rank(skill_gap.importance), skill_gap.skill.name ]
+      [ RoleSkill.importance_rank(skill_gap.importance), skill_gap.skill.name ]
     end
   end
 
@@ -49,21 +49,21 @@ class SkillGapAnalysis
 
   def ordered_gaps
     skill_gaps.select(&:gap?).sort_by do |skill_gap|
-      [ -skill_gap.gap, JobSkill.importance_rank(skill_gap.importance), skill_gap.skill.name ]
+      [ -skill_gap.gap, RoleSkill.importance_rank(skill_gap.importance), skill_gap.skill.name ]
     end
   end
 
   def skill_gaps
-    @skill_gaps ||= target_job_skills.map do |job_skill|
-      current_level = user_skill_levels.fetch(job_skill.skill_id, 0)
-      required_level = job_skill.required_level
+    @skill_gaps ||= target_role_skills.map do |role_skill|
+      current_level = user_skill_levels.fetch(role_skill.skill_id, 0)
+      required_level = role_skill.required_level
 
       SkillGap.new(
-        skill: job_skill.skill,
+        skill: role_skill.skill,
         current_level: current_level,
         required_level: required_level,
         gap: [ required_level - current_level, 0 ].max,
-        importance: job_skill.importance
+        importance: role_skill.importance
       )
     end
   end
@@ -74,20 +74,20 @@ class SkillGapAnalysis
     end
   end
 
-  def target_job
-    @target_job ||= begin
+  def target_role_record
+    @target_role_record ||= begin
       role = target_role
       if role.blank?
         nil
       else
-        Job.includes(job_skills: :skill).find_by(title: role)
+        Role.includes(role_skills: :skill).find_by(title: role)
       end
     end
   end
 
-  def target_job_skills
-    return [] unless target_job
+  def target_role_skills
+    return [] unless target_role_record
 
-    target_job.job_skills.includes(:skill).to_a
+    target_role_record.role_skills.includes(:skill).to_a
   end
 end
