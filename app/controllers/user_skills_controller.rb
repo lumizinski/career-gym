@@ -9,6 +9,7 @@ class UserSkillsController < ApplicationController
     if @user_skill.save
       redirect_to career_dashboard_path, notice: "Skill assessment was successfully added."
     else
+      analysis = SkillGapAnalysis.new(current_user)
       @career_profile = current_user.career_profile
       @user_skills = ordered_user_skills.to_a
       @skills_by_category = @user_skills.group_by { |skill| skill.skill.category }
@@ -16,6 +17,19 @@ class UserSkillsController < ApplicationController
         .sort_by { |user_skill| [ user_skill.level, user_skill.skill.name ] }
       @skills_count = @user_skills.size
       @average_skill_level = @skills_count.positive? ? (@user_skills.sum(&:level).to_f / @skills_count).round(1) : nil
+      @analysis = analysis
+      @training_plan = current_user.training_plan
+      @training_item_counts = if @training_plan
+        {
+          completed: @training_plan.training_items.completed.count,
+          in_progress: @training_plan.training_items.in_progress.count,
+          pending: @training_plan.training_items.pending.count
+        }
+      else
+        { completed: 0, in_progress: 0, pending: 0 }
+      end
+      training_skill_ids = @training_plan ? @training_plan.training_items.reorder(nil).distinct.pluck(:skill_id) : []
+      @highest_priority_training_gap = analysis.prioritized_gaps.find { |gap| training_skill_ids.include?(gap.skill.id) }
       render "career_dashboards/show", status: :unprocessable_content
     end
   end
@@ -50,6 +64,6 @@ class UserSkillsController < ApplicationController
   end
 
   def user_skill_params
-    params.expect(user_skill: [:skill_id, :level, :confidence])
+    params.expect(user_skill: [ :skill_id, :level, :confidence ])
   end
 end

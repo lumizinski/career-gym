@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   resources :roles
   resources :skills
   get "skill_gaps", to: "skill_gaps#index", as: :skill_gaps
+  resources :training, only: %i[index create], controller: "training"
+  resources :training_items, only: :update
 
   get "up" => "rails/health#show", as: :rails_health_check
 end

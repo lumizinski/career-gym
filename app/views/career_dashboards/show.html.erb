@@ -87,6 +87,19 @@
     <p>No skill gaps right now. Keep stretching toward your target role.</p>
   <% end %>
 </section>
+
+<section class="dashboard-panel" id="training">
+  <h2>Training</h2>
+  <p><%= @training_item_counts[:completed] %> items completed</p>
+  <p><%= @training_item_counts[:in_progress] %> items in progress</p>
+  <p><%= @training_item_counts[:pending] %> items remaining</p>
+
+  <% if @highest_priority_training_gap.present? %>
+    <p>Highest priority: <strong><%= @highest_priority_training_gap.skill.name %></strong></p>
+  <% end %>
+
+  <p><%= link_to "Continue Training", training_index_path, class: "dashboard-link" %></p>
+</section>
 </div>
 
 <section class="dashboard-panel" id="skills">

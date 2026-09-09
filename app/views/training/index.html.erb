@@ -1,0 +1,73 @@
+<% content_for :title, "Training Plan" %>
+
+<section class="dashboard-hero">
+  <p class="dashboard-eyebrow">Career Gym</p>
+  <h1>Training Plan</h1>
+  <% if @analysis.target_role.present? %>
+    <p class="dashboard-trajectory">Target: <%= @analysis.target_role %></p>
+  <% else %>
+    <p class="dashboard-trajectory">Set a target role to generate a focused training plan.</p>
+  <% end %>
+</section>
+
+<section class="dashboard-panel training-plan-actions">
+  <% if @training_plan.present? %>
+    <p>Regenerate your plan from your current biggest skill gaps.</p>
+    <%= button_to "Regenerate Training Plan", training_index_path, method: :post, class: "dashboard-button" %>
+  <% else %>
+    <p>Create your first training plan from your current skill gaps.</p>
+    <%= button_to "Create Training Plan", training_index_path, method: :post, class: "dashboard-button" %>
+  <% end %>
+</section>
+
+<% if @training_items_by_skill.any? %>
+  <% @training_items_by_skill.each_with_index do |group, index| %>
+    <section class="dashboard-panel training-skill-section">
+      <% if index.zero? %>
+        <p class="dashboard-eyebrow">Top Priority</p>
+      <% end %>
+      <h2><%= group[:skill].name %></h2>
+
+      <% if group[:gap].present? %>
+        <p><%= group[:gap].current_level %>/10 → <%= group[:gap].required_level %>/10</p>
+        <p class="dashboard-level"><span aria-hidden="true" class="dashboard-level-bar"><%= level_bar(group[:gap].current_level) %></span></p>
+      <% end %>
+
+      <h3>Training Items</h3>
+      <ul class="training-item-list">
+        <% group[:items].each do |item| %>
+          <li>
+            <span>
+              <% if item.completed? %>
+                ☑
+              <% elsif item.in_progress? %>
+                ◐
+              <% else %>
+                ☐
+              <% end %>
+              <strong><%= item.title %></strong>
+              <small>(<%= item.status.humanize %>)</small>
+            </span>
+
+            <div class="training-item-actions">
+              <% if item.pending? %>
+                <%= button_to "Start", training_item_path(item), method: :patch, params: { training_item: { status: :in_progress } }, class: "dashboard-button" %>
+              <% end %>
+              <% unless item.completed? %>
+                <%= button_to "Complete", training_item_path(item), method: :patch, params: { training_item: { status: :completed } }, class: "dashboard-button" %>
+              <% end %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+<% elsif @analysis.required_skills? %>
+  <section class="dashboard-panel">
+    <p>You currently have no training items. Generate your plan to get started.</p>
+  </section>
+<% else %>
+  <section class="dashboard-panel">
+    <p>Add your target role and role requirements first so we can build your plan.</p>
+  </section>
+<% end %>

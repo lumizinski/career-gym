@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_08_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_09_180011) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -54,6 +54,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_180000) do
     t.index "lower((name)::text), category", name: "index_skills_on_lower_name_and_category", unique: true
   end
 
+  create_table "training_items", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.text "description", null: false
+    t.integer "position", null: false
+    t.bigint "skill_id", null: false
+    t.integer "status", default: 0, null: false
+    t.string "title", null: false
+    t.bigint "training_plan_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["skill_id"], name: "index_training_items_on_skill_id"
+    t.index ["training_plan_id", "position"], name: "index_training_items_on_training_plan_id_and_position", unique: true
+    t.index ["training_plan_id"], name: "index_training_items_on_training_plan_id"
+  end
+
+  create_table "training_plans", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_training_plans_on_user_id", unique: true
+  end
+
   create_table "user_skills", force: :cascade do |t|
     t.integer "confidence"
     t.datetime "created_at", null: false
@@ -81,6 +102,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_08_180000) do
   add_foreign_key "career_profiles", "users"
   add_foreign_key "role_skills", "roles"
   add_foreign_key "role_skills", "skills"
+  add_foreign_key "training_items", "skills"
+  add_foreign_key "training_items", "training_plans"
+  add_foreign_key "training_plans", "users"
   add_foreign_key "user_skills", "skills"
   add_foreign_key "user_skills", "users"
 end

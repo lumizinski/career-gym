@@ -13,6 +13,12 @@ RSpec.describe User, type: :model do
     expect(association.macro).to eq(:has_many)
   end
 
+  it "has one training plan" do
+    association = described_class.reflect_on_association(:training_plan)
+
+    expect(association.macro).to eq(:has_one)
+  end
+
   it "has many skills through user skills" do
     association = described_class.reflect_on_association(:skills)
 
