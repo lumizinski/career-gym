@@ -2,10 +2,10 @@
 
 one:
   company: MyString
-  title: MyString
+  title: Fixture Role One
   description: MyString
 
 two:
   company: MyString
-  title: MyString
+  title: Fixture Role Two
   description: MyString

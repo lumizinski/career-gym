@@ -31,6 +31,7 @@
       <p>
         Signed in as <%= current_user.email %> |
         <%= link_to "Dashboard", career_dashboard_path %> |
+        <%= link_to "Skill Gap Analysis", skill_gaps_path %> |
         <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete } %>
       </p>
     <% else %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_07_133000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_08_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -26,15 +26,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_133000) do
     t.index ["user_id"], name: "index_career_profiles_on_user_id", unique: true
   end
 
-  create_table "job_skills", force: :cascade do |t|
+  create_table "role_skills", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "importance"
-    t.string "job"
-    t.string "skill"
+    t.integer "required_level", null: false
+    t.bigint "role_id", null: false
+    t.bigint "skill_id", null: false
     t.datetime "updated_at", null: false
+    t.index ["role_id", "skill_id"], name: "index_role_skills_on_role_id_and_skill_id", unique: true
+    t.index ["role_id"], name: "index_role_skills_on_role_id"
+    t.index ["skill_id"], name: "index_role_skills_on_skill_id"
   end
 
-  create_table "jobs", force: :cascade do |t|
+  create_table "roles", force: :cascade do |t|
     t.string "company"
     t.datetime "created_at", null: false
     t.string "description"
@@ -75,6 +79,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_07_133000) do
   end
 
   add_foreign_key "career_profiles", "users"
+  add_foreign_key "role_skills", "roles"
+  add_foreign_key "role_skills", "skills"
   add_foreign_key "user_skills", "skills"
   add_foreign_key "user_skills", "users"
 end

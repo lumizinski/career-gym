@@ -17,7 +17,7 @@ class SkillsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create skill" do
     assert_difference("Skill.count") do
-      post skills_url, params: { skill: { category: @skill.category, name: @skill.name } }
+      post skills_url, params: { skill: { category: "Backend", name: "Rails" } }
     end
 
     assert_redirected_to skill_url(Skill.last)
@@ -34,13 +34,15 @@ class SkillsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update skill" do
-    patch skill_url(@skill), params: { skill: { category: @skill.category, name: @skill.name } }
+    patch skill_url(@skill), params: { skill: { category: @skill.category, name: "Ruby on Rails" } }
     assert_redirected_to skill_url(@skill)
   end
 
-  test "should destroy skill" do
+  test "should destroy an unrestricted skill" do
+    disposable_skill = Skill.create!(name: "Disposable Skill", category: "Misc")
+
     assert_difference("Skill.count", -1) do
-      delete skill_url(@skill)
+      delete skill_url(disposable_skill)
     end
 
     assert_redirected_to skills_url

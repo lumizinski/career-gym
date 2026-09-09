@@ -1,0 +1,36 @@
+<%= form_with(model: role_skill) do |form| %>
+  <% if role_skill.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(role_skill.errors.count, "error") %> prohibited this role skill from being saved:</h2>
+      <ul>
+        <% role_skill.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :role_id, "Role", style: "display: block" %>
+    <%= form.collection_select :role_id, Role.order(:title), :id, :title, prompt: "Select a role" %>
+  </div>
+
+  <div>
+    <%= form.label :skill_id, "Skill", style: "display: block" %>
+    <%= form.collection_select :skill_id, Skill.order(:category, :name), :id, :name, prompt: "Select a skill" %>
+  </div>
+
+  <div>
+    <%= form.label :required_level, style: "display: block" %>
+    <%= form.number_field :required_level, in: 1..10 %>
+  </div>
+
+  <div>
+    <%= form.label :importance, style: "display: block" %>
+    <%= form.select :importance, RoleSkill::IMPORTANCE_ORDER.keys %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

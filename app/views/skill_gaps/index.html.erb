@@ -1,0 +1,133 @@
+<% content_for :title, "Skill Gap Analysis" %>
+
+<section class="dashboard-hero">
+  <p class="dashboard-eyebrow">Career Gym</p>
+  <h1>Skill Gap Analysis</h1>
+
+  <% if @analysis.target_role.present? %>
+    <p class="dashboard-trajectory">Target: <%= @analysis.target_role %></p>
+  <% else %>
+    <p class="dashboard-trajectory">Add a target role to see what to work on next.</p>
+  <% end %>
+</section>
+
+<% if @analysis.biggest_gap.present? %>
+  <section class="dashboard-panel skill-gap-priority">
+    <h2>Your #1 Career Gap</h2>
+
+    <article class="skill-gap-card skill-gap-card--priority">
+      <h3><%= @analysis.biggest_gap.skill.name %></h3>
+      <dl class="skill-gap-metrics">
+        <div>
+          <dt>Current</dt>
+          <dd><%= @analysis.biggest_gap.current_level %>/10</dd>
+        </div>
+        <div>
+          <dt>Target</dt>
+          <dd><%= @analysis.biggest_gap.required_level %>/10</dd>
+        </div>
+        <div>
+          <dt>Gap</dt>
+          <dd><%= @analysis.biggest_gap.gap %> points</dd>
+        </div>
+      </dl>
+      <p>This should be your highest-priority training area.</p>
+    </article>
+  </section>
+<% end %>
+
+<section class="dashboard-grid skill-gap-grid">
+  <section class="dashboard-panel" id="critical-skill-gaps">
+    <h2>Critical Gaps</h2>
+
+    <% if @analysis.target_role.blank? %>
+      <p>Add a target role in your career profile to unlock this analysis.</p>
+    <% elsif !@analysis.required_skills? %>
+      <p>No required skills are defined for this target role yet.</p>
+    <% elsif @analysis.critical_gaps.any? %>
+      <div class="skill-gap-list">
+        <% @analysis.critical_gaps.each do |skill_gap| %>
+          <article class="skill-gap-card">
+            <h3><%= skill_gap.skill.name %></h3>
+            <dl class="skill-gap-metrics">
+              <div>
+                <dt>Current</dt>
+                <dd><%= skill_gap.current_level %>/10</dd>
+              </div>
+              <div>
+                <dt>Required</dt>
+                <dd><%= skill_gap.required_level %>/10</dd>
+              </div>
+              <div>
+                <dt>Gap</dt>
+                <dd><%= skill_gap.gap %></dd>
+              </div>
+            </dl>
+          </article>
+        <% end %>
+      </div>
+    <% else %>
+      <p>No critical gaps right now.</p>
+    <% end %>
+  </section>
+
+  <section class="dashboard-panel" id="other-skill-gaps">
+    <h2>Smaller Gaps</h2>
+
+    <% if @analysis.required_skills? && @analysis.other_gaps.any? %>
+      <div class="skill-gap-list">
+        <% @analysis.other_gaps.each do |skill_gap| %>
+          <article class="skill-gap-card">
+            <h3><%= skill_gap.skill.name %></h3>
+            <dl class="skill-gap-metrics">
+              <div>
+                <dt>Current</dt>
+                <dd><%= skill_gap.current_level %>/10</dd>
+              </div>
+              <div>
+                <dt>Required</dt>
+                <dd><%= skill_gap.required_level %>/10</dd>
+              </div>
+              <div>
+                <dt>Gap</dt>
+                <dd><%= skill_gap.gap %></dd>
+              </div>
+            </dl>
+          </article>
+        <% end %>
+      </div>
+    <% elsif @analysis.required_skills? %>
+      <p>No smaller gaps right now.</p>
+    <% else %>
+      <p>Once role requirements exist, smaller gaps will appear here.</p>
+    <% end %>
+  </section>
+</section>
+
+<section class="dashboard-panel" id="skill-gap-strengths">
+  <h2>Strengths</h2>
+
+  <% if @analysis.required_skills? && @analysis.strengths.any? %>
+    <div class="skill-gap-list">
+      <% @analysis.strengths.each do |skill_gap| %>
+        <article class="skill-gap-card skill-gap-card--strength">
+          <h3><%= skill_gap.skill.name %></h3>
+          <dl class="skill-gap-metrics">
+            <div>
+              <dt>Current</dt>
+              <dd><%= skill_gap.current_level %>/10</dd>
+            </div>
+            <div>
+              <dt>Required</dt>
+              <dd><%= skill_gap.required_level %>/10</dd>
+            </div>
+          </dl>
+        </article>
+      <% end %>
+    </div>
+  <% elsif @analysis.required_skills? %>
+    <p>No strengths yet for this target role.</p>
+  <% else %>
+    <p>Strengths will appear here once role requirements are defined.</p>
+  <% end %>
+</section>
