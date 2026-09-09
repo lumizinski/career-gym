@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_09_180011) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_09_190000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -24,6 +24,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_09_180011) do
     t.bigint "user_id", null: false
     t.integer "years_of_experience"
     t.index ["user_id"], name: "index_career_profiles_on_user_id", unique: true
+  end
+
+  create_table "engineering_labs", force: :cascade do |t|
+    t.datetime "completed_at"
+    t.datetime "created_at", null: false
+    t.text "deliverables", default: [], null: false, array: true
+    t.text "description", null: false
+    t.text "objective", null: false
+    t.bigint "skill_id", null: false
+    t.datetime "started_at"
+    t.integer "status", default: 0, null: false
+    t.string "title", null: false
+    t.bigint "training_item_id"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["skill_id"], name: "index_engineering_labs_on_skill_id"
+    t.index ["training_item_id"], name: "index_engineering_labs_on_training_item_id", unique: true, where: "(training_item_id IS NOT NULL)"
+    t.index ["user_id", "status"], name: "index_engineering_labs_on_user_id_and_status"
+    t.index ["user_id"], name: "index_engineering_labs_on_user_id"
   end
 
   create_table "role_skills", force: :cascade do |t|
@@ -100,6 +119,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_09_180011) do
   end
 
   add_foreign_key "career_profiles", "users"
+  add_foreign_key "engineering_labs", "skills"
+  add_foreign_key "engineering_labs", "training_items", on_delete: :nullify
+  add_foreign_key "engineering_labs", "users"
   add_foreign_key "role_skills", "roles"
   add_foreign_key "role_skills", "skills"
   add_foreign_key "training_items", "skills"

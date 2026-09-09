@@ -1,6 +1,8 @@
 require "rails_helper"
 
 RSpec.describe EngineeringLab, type: :model do
+  include ActiveSupport::Testing::TimeHelpers
+
   it "belongs to user, skill, and optionally training item" do
     user_association = described_class.reflect_on_association(:user)
     skill_association = described_class.reflect_on_association(:skill)

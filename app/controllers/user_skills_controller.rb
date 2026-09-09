@@ -30,6 +30,13 @@ class UserSkillsController < ApplicationController
       end
       training_skill_ids = @training_plan ? @training_plan.training_items.reorder(nil).distinct.pluck(:skill_id) : []
       @highest_priority_training_gap = analysis.prioritized_gaps.find { |gap| training_skill_ids.include?(gap.skill.id) }
+      labs = current_user.engineering_labs
+      @engineering_lab_counts = {
+        completed: labs.completed.count,
+        in_progress: labs.in_progress.count,
+        pending: labs.pending.count
+      }
+      @latest_engineering_lab = labs.includes(:skill).order(updated_at: :desc, id: :desc).first
       render "career_dashboards/show", status: :unprocessable_content
     end
   end

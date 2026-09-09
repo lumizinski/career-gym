@@ -3,7 +3,7 @@ class CreateEngineeringLabs < ActiveRecord::Migration[8.1]
     create_table :engineering_labs do |t|
       t.references :user, null: false, foreign_key: true
       t.references :skill, null: false, foreign_key: true
-      t.references :training_item, null: true, foreign_key: { on_delete: :nullify }
+      t.references :training_item, null: true, index: false, foreign_key: { on_delete: :nullify }
       t.string :title, null: false
       t.text :description, null: false
       t.text :objective, null: false

@@ -10,5 +10,5 @@
   <p><strong>Training item:</strong> <%= @training_item.title %></p>
   <p><strong>Skill:</strong> <%= @training_item.skill.name %></p>
 
-  <%= render "form", lab: @lab, form_url: labs_path(training_item_id: @training_item.id) %>
+  <%= render "form", lab: @lab, form_url: labs_path(training_item_id: @training_item.id), submit_label: "Create Engineering Lab" %>
 </section>
