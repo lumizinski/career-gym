@@ -2,9 +2,11 @@ require "rails_helper"
 
 RSpec.describe Skill, type: :model do
   it "has user skills and users associations" do
+    training_items_association = described_class.reflect_on_association(:training_items)
     user_skills_association = described_class.reflect_on_association(:user_skills)
     users_association = described_class.reflect_on_association(:users)
 
+    expect(training_items_association.macro).to eq(:has_many)
     expect(user_skills_association.macro).to eq(:has_many)
     expect(users_association.macro).to eq(:has_many)
     expect(users_association.options[:through]).to eq(:user_skills)

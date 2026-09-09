@@ -31,6 +31,10 @@ class SkillGapAnalysis
     ordered_gaps.first
   end
 
+  def prioritized_gaps
+    ordered_gaps
+  end
+
   def critical_gaps
     ordered_gaps.select(&:critical_gap?)
   end
