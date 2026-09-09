@@ -1,0 +1,14 @@
+<% content_for :title, "Create Engineering Lab" %>
+
+<section class="dashboard-hero">
+  <p class="dashboard-eyebrow">Career Gym</p>
+  <h1>Create Engineering Lab</h1>
+  <p class="dashboard-trajectory">Turn this training item into practical work.</p>
+</section>
+
+<section class="dashboard-panel">
+  <p><strong>Training item:</strong> <%= @training_item.title %></p>
+  <p><strong>Skill:</strong> <%= @training_item.skill.name %></p>
+
+  <%= render "form", lab: @lab, form_url: labs_path(training_item_id: @training_item.id), submit_label: "Create Engineering Lab" %>
+</section>

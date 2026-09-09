@@ -1,0 +1,50 @@
+<% content_for :title, @lab.title %>
+
+<section class="dashboard-hero">
+  <p class="dashboard-eyebrow">Career Gym</p>
+  <h1><%= @lab.title %></h1>
+  <p class="dashboard-trajectory"><%= @lab.description %></p>
+</section>
+
+<section class="dashboard-panel">
+  <p><strong>Skill:</strong> <%= @lab.skill.name %></p>
+  <p><strong>Current level:</strong> <%= @current_skill_level %>/10</p>
+  <p>
+    <strong>Target level:</strong>
+    <% if @target_skill_level.present? %>
+      <%= @target_skill_level %>/10
+    <% else %>
+      Not set yet
+    <% end %>
+  </p>
+</section>
+
+<section class="dashboard-panel">
+  <h2>Objective</h2>
+  <%= simple_format(@lab.objective) %>
+</section>
+
+<section class="dashboard-panel">
+  <h2>Deliverables</h2>
+  <% if @lab.deliverables.any? %>
+    <ul>
+      <% @lab.deliverables.each do |deliverable| %>
+        <li>☐ <%= deliverable %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No deliverables defined yet.</p>
+  <% end %>
+</section>
+
+<section class="dashboard-panel">
+  <h2>Status</h2>
+  <p><%= @lab.status.humanize.titleize %></p>
+
+  <p>
+    <%= link_to "Edit Lab", edit_lab_path(@lab), class: "dashboard-link" %>
+    <% unless @lab.completed? %>
+      <%= button_to "Mark as Completed", complete_lab_path(@lab), method: :patch, class: "dashboard-button" %>
+    <% end %>
+  </p>
+</section>

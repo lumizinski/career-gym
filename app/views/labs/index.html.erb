@@ -1,0 +1,26 @@
+<% content_for :title, "Engineering Labs" %>
+
+<section class="dashboard-hero">
+  <p class="dashboard-eyebrow">Career Gym</p>
+  <h1>Engineering Labs</h1>
+</section>
+
+<% if @labs.any? %>
+  <% @labs.each do |lab| %>
+    <section class="dashboard-panel">
+      <h2><%= lab.skill.name %></h2>
+      <h3><%= lab.title %></h3>
+      <p><%= lab.description %></p>
+      <p>Status: <strong><%= lab.status.humanize.titleize %></strong></p>
+
+      <h4>Objective</h4>
+      <%= simple_format(lab.objective) %>
+
+      <p><%= link_to "Open Lab", lab_path(lab), class: "dashboard-link" %></p>
+    </section>
+  <% end %>
+<% else %>
+  <section class="dashboard-panel">
+    <p>You do not have any labs yet. Start a practical workout from your training plan.</p>
+  </section>
+<% end %>

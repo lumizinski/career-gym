@@ -1,0 +1,35 @@
+<%= form_with model: lab, url: form_url do |form| %>
+  <% if lab.errors.any? %>
+    <div class="dashboard-errors">
+      <ul>
+        <% lab.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, class: "dashboard-label" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :description, class: "dashboard-label" %>
+    <%= form.text_area :description, rows: 4 %>
+  </div>
+
+  <div>
+    <%= form.label :objective, class: "dashboard-label" %>
+    <%= form.text_area :objective, rows: 6 %>
+  </div>
+
+  <div>
+    <%= form.label :deliverables_text, "Deliverables (one per line)", class: "dashboard-label" %>
+    <%= form.text_area :deliverables_text, value: lab.deliverables_text, rows: 6 %>
+  </div>
+
+  <div>
+    <%= form.submit submit_label, class: "dashboard-button" %>
+  </div>
+<% end %>

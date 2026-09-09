@@ -53,6 +53,12 @@
               <% if item.pending? %>
                 <%= button_to "Start", training_item_path(item), method: :patch, params: { training_item: { status: :in_progress } }, class: "dashboard-button" %>
               <% end %>
+              <% if item.engineering_lab.present? %>
+                <span>🧪 Lab created</span>
+                <%= link_to "Open Lab", lab_path(item.engineering_lab), class: "dashboard-link" %>
+              <% elsif item.supports_engineering_lab? %>
+                <%= link_to "Create Lab", new_lab_path(training_item_id: item.id), class: "dashboard-link" %>
+              <% end %>
               <% unless item.completed? %>
                 <%= button_to "Complete", training_item_path(item), method: :patch, params: { training_item: { status: :completed } }, class: "dashboard-button" %>
               <% end %>

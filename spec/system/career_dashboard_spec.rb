@@ -64,4 +64,20 @@ RSpec.describe "Career dashboard", type: :system do
       expect(page).to have_link("Create Career Profile", href: new_career_profile_path)
     end
   end
+
+  it "shows engineering labs summary on the dashboard" do
+    user = create(:user)
+    postgres = create(:skill, name: "PostgreSQL", category: "Database")
+    create(:engineering_lab, user: user, skill: postgres, title: "PostgreSQL Query Optimization", status: :completed)
+
+    login_as user, scope: :user
+
+    visit "/dashboard"
+
+    within("#engineering-labs") do
+      expect(page).to have_text("Engineering Labs")
+      expect(page).to have_text("1 completed")
+      expect(page).to have_link("View Labs", href: labs_path)
+    end
+  end
 end

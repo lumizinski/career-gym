@@ -100,6 +100,22 @@
 
   <p><%= link_to "Continue Training", training_index_path, class: "dashboard-link" %></p>
 </section>
+
+<section class="dashboard-panel" id="engineering-labs">
+  <h2>Engineering Labs</h2>
+  <p><%= @engineering_lab_counts[:completed] %> completed</p>
+  <p><%= @engineering_lab_counts[:in_progress] %> in progress</p>
+  <p><%= @engineering_lab_counts[:pending] %> pending</p>
+
+  <% if @latest_engineering_lab.present? %>
+    <p>Latest: <strong><%= @latest_engineering_lab.title %></strong></p>
+    <p><%= @latest_engineering_lab.status.humanize %></p>
+  <% else %>
+    <p>Start a practical workout from your training plan.</p>
+  <% end %>
+
+  <p><%= link_to "View Labs", labs_path, class: "dashboard-link" %></p>
+</section>
 </div>
 
 <section class="dashboard-panel" id="skills">

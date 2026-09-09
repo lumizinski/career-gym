@@ -67,4 +67,22 @@ RSpec.describe "CareerDashboard", type: :request do
     expect(response.body).to include("Highest priority: <strong>System Design</strong>")
     expect(response.body).to include("Continue Training")
   end
+
+  it "shows engineering lab summary and latest lab" do
+    user = create(:user)
+    postgres = create(:skill, name: "PostgreSQL", category: "Database")
+    create(:engineering_lab, user: user, skill: postgres, title: "Completed lab", status: :completed, updated_at: 2.days.ago)
+    latest_lab = create(:engineering_lab, user: user, skill: postgres, title: "Latest lab", status: :in_progress, updated_at: 1.hour.ago)
+
+    sign_in user
+    get "/dashboard"
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("Engineering Labs")
+    expect(response.body).to include("1 completed")
+    expect(response.body).to include("1 in progress")
+    expect(response.body).to include("0 pending")
+    expect(response.body).to include("Latest: <strong>#{latest_lab.title}</strong>")
+    expect(response.body).to include("View Labs")
+  end
 end

@@ -13,6 +13,8 @@ class CareerDashboardsController < ApplicationController
     @training_plan = current_user.training_plan
     @training_item_counts = training_item_counts
     @highest_priority_training_gap = highest_priority_training_gap
+    @engineering_lab_counts = engineering_lab_counts
+    @latest_engineering_lab = current_user.engineering_labs.includes(:skill).order(updated_at: :desc, id: :desc).first
 
     @user_skill = current_user.user_skills.build
     @available_skills = Skill.where.not(id: current_user.user_skills.select(:skill_id)).order(:category, :name)
@@ -36,5 +38,14 @@ class CareerDashboardsController < ApplicationController
 
     training_skill_ids = @training_plan.training_items.reorder(nil).distinct.pluck(:skill_id)
     @analysis.prioritized_gaps.find { |gap| training_skill_ids.include?(gap.skill.id) }
+  end
+
+  def engineering_lab_counts
+    labs = current_user.engineering_labs
+    {
+      completed: labs.completed.count,
+      in_progress: labs.in_progress.count,
+      pending: labs.pending.count
+    }
   end
 end

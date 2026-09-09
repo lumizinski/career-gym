@@ -1,0 +1,11 @@
+<% content_for :title, "Edit Engineering Lab" %>
+
+<section class="dashboard-hero">
+  <p class="dashboard-eyebrow">Career Gym</p>
+  <h1>Edit Engineering Lab</h1>
+  <p class="dashboard-trajectory"><%= @lab.skill.name %></p>
+</section>
+
+<section class="dashboard-panel">
+  <%= render "form", lab: @lab, form_url: lab_path(@lab), submit_label: "Update Engineering Lab" %>
+</section>

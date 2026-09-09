@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   get "skill_gaps", to: "skill_gaps#index", as: :skill_gaps
   resources :training, only: %i[index create], controller: "training"
   resources :training_items, only: :update
+  resources :labs, only: %i[index show new create edit update] do
+    patch :complete, on: :member
+  end
 
   get "up" => "rails/health#show", as: :rails_health_check
 end
