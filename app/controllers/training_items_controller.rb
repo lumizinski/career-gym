@@ -33,6 +33,7 @@ class TrainingItemsController < ApplicationController
     return if uri.host.present? || uri.scheme.present?
     return unless path.start_with?("/")
     return if path.start_with?("//")
+    return unless [ training_index_path, focus_path ].include?(path)
 
     path
   rescue URI::InvalidURIError
