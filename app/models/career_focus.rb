@@ -36,6 +36,13 @@ class CareerFocus
     @analysis.required_skills?
   end
 
+  def target_role_record
+    @target_role_record ||= begin
+      role_title = target_role
+      role_title.present? ? Role.find_by(title: role_title) : nil
+    end
+  end
+
   def skills
     @skills ||= prioritized_skills.first(MAX_PRIORITY_SKILLS)
   end
@@ -46,7 +53,7 @@ class CareerFocus
 
   def week_range_label
     week_start = @date.beginning_of_week(:monday)
-    week_end = @date.end_of_week(:monday)
+    week_end = week_start + 6.days
 
     if week_start.month == week_end.month
       "#{week_start.strftime('%B %-d')}–#{week_end.strftime('%-d')}"

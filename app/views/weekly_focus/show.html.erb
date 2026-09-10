@@ -15,7 +15,11 @@
     <p><%= link_to "Create Career Profile", new_career_profile_path, class: "dashboard-link" %></p>
   <% elsif !@focus.required_skills? %>
     <p>Add role skill requirements for your target role to generate focus priorities.</p>
-    <p><%= link_to "Manage Role Skills", role_skills_path, class: "dashboard-link" %></p>
+    <% if @focus.target_role_record.present? %>
+      <p><%= link_to "Add Skill Requirement for #{@focus.target_role_record.title}", new_role_skill_path(role_skill: { role_id: @focus.target_role_record.id }), class: "dashboard-link" %></p>
+    <% else %>
+      <p><%= link_to "Create Target Role", new_role_path, class: "dashboard-link" %></p>
+    <% end %>
   <% elsif @focus.skills.empty? %>
     <p>No active skill gaps this week. Keep executing your plan and reassess your skill levels.</p>
     <p><%= link_to "View Dashboard", career_dashboard_path, class: "dashboard-link" %></p>

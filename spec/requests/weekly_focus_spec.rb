@@ -42,4 +42,17 @@ RSpec.describe "WeeklyFocus", type: :request do
     expect(response.body).not_to include("Terraform")
     expect(response.body).not_to include("Other user task")
   end
+
+  it "links to adding requirements for the user's target role when requirements are missing" do
+    user = create(:user)
+    profile = create(:career_profile, user: user, target_role: "Staff Backend Engineer")
+    role = create(:role, title: profile.target_role)
+
+    sign_in user
+    get focus_path
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("Add role skill requirements for your target role")
+    expect(response.body).to include(new_role_skill_path(role_skill: { role_id: role.id }))
+  end
 end
