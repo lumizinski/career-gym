@@ -57,7 +57,7 @@ class LabsController < ApplicationController
   private
 
   def set_lab
-    @lab = current_user.engineering_labs.includes(:skill, training_item: { training_plan: :user }).find(params.expect(:id))
+    @lab = current_user.engineering_labs.includes(:proof_of_works, :skill, training_item: { training_plan: :user }).find(params.expect(:id))
   end
 
   def set_training_item

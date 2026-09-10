@@ -65,10 +65,12 @@ RSpec.describe "Career dashboard", type: :system do
     end
   end
 
-  it "shows engineering labs summary on the dashboard" do
+  it "shows engineering labs and proof of work summary on the dashboard" do
     user = create(:user)
     postgres = create(:skill, name: "PostgreSQL", category: "Database")
-    create(:engineering_lab, user: user, skill: postgres, title: "PostgreSQL Query Optimization", status: :completed)
+    lab = create(:engineering_lab, user: user, skill: postgres, title: "PostgreSQL Query Optimization", status: :completed)
+    create(:proof_of_work, user: user, engineering_lab: lab, proof_type: :github_repository)
+    create(:proof_of_work, user: user, engineering_lab: lab, proof_type: :benchmark, title: "Benchmark results")
 
     login_as user, scope: :user
 
@@ -78,6 +80,14 @@ RSpec.describe "Career dashboard", type: :system do
       expect(page).to have_text("Engineering Labs")
       expect(page).to have_text("1 completed")
       expect(page).to have_link("View Labs", href: labs_path)
+    end
+
+    within("#proof-of-work") do
+      expect(page).to have_text("Proof of Work")
+      expect(page).to have_text("2 pieces of evidence")
+      expect(page).to have_text("1 GitHub Repository")
+      expect(page).to have_text("1 Benchmark")
+      expect(page).to have_link("View Proof of Work", href: proof_of_works_path)
     end
   end
 end

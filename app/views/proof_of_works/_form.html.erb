@@ -1,0 +1,36 @@
+<%= form_with model: proof_of_work, url: url do |form| %>
+  <% if proof_of_work.errors.any? %>
+    <div class="dashboard-errors">
+      <ul>
+        <% proof_of_work.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, class: "dashboard-label" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :proof_type, "Type", class: "dashboard-label" %>
+    <%= form.select :proof_type, options_for_select(ProofOfWork.proof_type_options, proof_of_work.proof_type), prompt: "Select proof type" %>
+  </div>
+
+  <div>
+    <%= form.label :description, class: "dashboard-label" %>
+    <%= form.text_area :description, rows: 5 %>
+  </div>
+
+  <div>
+    <%= form.label :url, "URL", class: "dashboard-label" %>
+    <%= form.url_field :url, placeholder: "https://example.com/evidence" %>
+    <p>Optional. Add a public link if your evidence is hosted online.</p>
+  </div>
+
+  <div>
+    <%= form.submit submit_label, class: "dashboard-button" %>
+  </div>
+<% end %>

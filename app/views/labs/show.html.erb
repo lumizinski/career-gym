@@ -48,3 +48,25 @@
     <% end %>
   </p>
 </section>
+
+<section class="dashboard-panel" id="proof-of-work">
+  <h2>Proof of Work</h2>
+
+  <% if @lab.completed? %>
+    <% if @lab.proof_of_works.any? %>
+      <% @lab.proof_of_works.recent_first.each do |proof| %>
+        <article>
+          <p>✓ <strong><%= proof.proof_type_label %></strong></p>
+          <p><%= proof.title %></p>
+          <p><%= link_to "Open", proof_of_work_path(proof), class: "dashboard-link" %></p>
+        </article>
+      <% end %>
+    <% else %>
+      <p>No proof attached yet.</p>
+    <% end %>
+
+    <p><%= link_to "Add Proof of Work", new_lab_proof_of_work_path(@lab), class: "dashboard-link" %></p>
+  <% else %>
+    <p>Complete this lab to attach proof of work.</p>
+  <% end %>
+</section>

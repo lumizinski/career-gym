@@ -116,6 +116,21 @@
 
   <p><%= link_to "View Labs", labs_path, class: "dashboard-link" %></p>
 </section>
+
+<section class="dashboard-panel" id="proof-of-work">
+  <h2>Proof of Work</h2>
+
+  <% if @proof_of_work_count.positive? %>
+    <p><%= pluralize(@proof_of_work_count, "piece") %> of evidence</p>
+    <% @proof_of_work_type_counts.sort_by { |proof_type, _count| ProofOfWork.proof_type_label_for(proof_type) }.each do |proof_type, count| %>
+      <p><%= count %> <%= ProofOfWork.proof_type_label_for(proof_type).pluralize(count) %></p>
+    <% end %>
+  <% else %>
+    <p>No evidence attached yet.</p>
+  <% end %>
+
+  <p><%= link_to "View Proof of Work", proof_of_works_path, class: "dashboard-link" %></p>
+</section>
 </div>
 
 <section class="dashboard-panel" id="skills">

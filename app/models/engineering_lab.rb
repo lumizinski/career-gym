@@ -4,6 +4,7 @@ class EngineeringLab < ApplicationRecord
   belongs_to :user
   belongs_to :skill
   belongs_to :training_item, optional: true
+  has_many :proof_of_works, dependent: :destroy
 
   scope :ordered, lambda {
     order(

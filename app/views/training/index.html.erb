@@ -36,6 +36,7 @@
       <h3>Training Items</h3>
       <ul class="training-item-list">
         <% group[:items].each do |item| %>
+          <% lab = item.engineering_lab %>
           <li>
             <span>
               <% if item.completed? %>
@@ -53,9 +54,9 @@
               <% if item.pending? %>
                 <%= button_to "Start", training_item_path(item), method: :patch, params: { training_item: { status: :in_progress } }, class: "dashboard-button" %>
               <% end %>
-              <% if item.engineering_lab.present? %>
+              <% if lab.present? %>
                 <span>🧪 Lab created</span>
-                <%= link_to "Open Lab", lab_path(item.engineering_lab), class: "dashboard-link" %>
+                <%= link_to "Open Lab", lab_path(lab), class: "dashboard-link" %>
               <% elsif item.supports_engineering_lab? %>
                 <%= link_to "Create Lab", new_lab_path(training_item_id: item.id), class: "dashboard-link" %>
               <% end %>
@@ -63,6 +64,18 @@
                 <%= button_to "Complete", training_item_path(item), method: :patch, params: { training_item: { status: :completed } }, class: "dashboard-button" %>
               <% end %>
             </div>
+
+            <% if lab&.completed? %>
+              <div>
+                <p><strong>Proof:</strong></p>
+                <% if lab.proof_of_works.any? %>
+                  <p>✓ Evidence attached</p>
+                <% else %>
+                  <p>⚠ No evidence yet</p>
+                  <p><%= link_to "Add Proof", new_lab_proof_of_work_path(lab), class: "dashboard-link" %></p>
+                <% end %>
+              </div>
+            <% end %>
           </li>
         <% end %>
       </ul>

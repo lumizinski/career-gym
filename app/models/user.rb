@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_one :career_profile, dependent: :destroy
   has_one :training_plan, dependent: :destroy
   has_many :engineering_labs, dependent: :destroy
+  has_many :proof_of_works, dependent: :destroy
   has_many :user_skills, dependent: :destroy
   has_many :skills, through: :user_skills
 end

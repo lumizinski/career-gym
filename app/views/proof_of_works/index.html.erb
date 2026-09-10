@@ -1,0 +1,29 @@
+<% content_for :title, "Proof of Work" %>
+
+<section class="dashboard-hero">
+  <p class="dashboard-eyebrow">Career Gym</p>
+  <h1>Proof of Work</h1>
+  <p class="dashboard-trajectory">Your evidence of real engineering ability</p>
+</section>
+
+<% if @proof_groups.any? %>
+  <% @proof_groups.each do |skill, proofs| %>
+    <section class="dashboard-panel">
+      <h2><%= skill.name %></h2>
+
+      <% proofs.each do |proof| %>
+        <article>
+          <h3><%= proof.title %></h3>
+          <p><strong><%= proof.proof_type_label %></strong></p>
+          <p><strong>Lab:</strong> <%= proof.engineering_lab.title %></p>
+          <p>Completed <%= proof.completed_at.strftime("%b %Y") %></p>
+          <p><%= link_to "Open", proof_of_work_path(proof), class: "dashboard-link" %></p>
+        </article>
+      <% end %>
+    </section>
+  <% end %>
+<% else %>
+  <section class="dashboard-panel">
+    <p>You do not have any proof of work yet. Complete an engineering lab and attach evidence to start building your portfolio.</p>
+  </section>
+<% end %>

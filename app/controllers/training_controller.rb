@@ -26,7 +26,7 @@ class TrainingController < ApplicationController
       memo[gap.skill.id] = [ index, gap ]
     end
 
-    @training_plan.training_items.includes(:skill, :engineering_lab).group_by(&:skill).map do |skill, items|
+    @training_plan.training_items.includes(:skill, engineering_lab: :proof_of_works).group_by(&:skill).map do |skill, items|
       priority_index, gap = gap_index.fetch(skill.id, [ Float::INFINITY, nil ])
       {
         skill: skill,
