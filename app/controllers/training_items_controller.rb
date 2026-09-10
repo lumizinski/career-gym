@@ -26,7 +26,7 @@ class TrainingItemsController < ApplicationController
   end
 
   def safe_return_path
-    path = params[:return_to].presence || request.referer
+    path = params[:return_to].presence
     return unless path.present?
 
     uri = URI.parse(path)

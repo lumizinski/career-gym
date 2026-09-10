@@ -23,6 +23,11 @@ RSpec.describe "Weekly focus", type: :system do
     expect(page).to have_text("Priority: VERY HIGH")
     expect(page).to have_text("0/1 completed")
     expect(page).to have_text("Design a notification system")
+    expect(page).to have_button("Start")
+
+    click_button "Start"
+    expect(page).to have_text("Training item updated.")
+    expect(page).to have_button("Complete")
 
     click_button "Complete"
 

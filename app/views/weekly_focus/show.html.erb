@@ -59,7 +59,11 @@
                   <strong><%= item.title %></strong>
                 </span>
                 <div class="training-item-actions">
-                  <%= button_to "Complete", training_item_path(item), method: :patch, params: { training_item: { status: :completed }, return_to: focus_path }, class: "dashboard-button" %>
+                  <% if item.pending? %>
+                    <%= button_to "Start", training_item_path(item), method: :patch, params: { training_item: { status: :in_progress }, return_to: focus_path }, class: "dashboard-button" %>
+                  <% elsif item.in_progress? %>
+                    <%= button_to "Complete", training_item_path(item), method: :patch, params: { training_item: { status: :completed }, return_to: focus_path }, class: "dashboard-button" %>
+                  <% end %>
                 </div>
               </li>
             <% end %>
