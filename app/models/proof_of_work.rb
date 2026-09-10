@@ -21,7 +21,7 @@ class ProofOfWork < ApplicationRecord
     "other" => "Other"
   }.freeze
 
-  enum :proof_type, PROOF_TYPES, validate: true
+  enum :proof_type, PROOF_TYPES, prefix: true, validate: true
 
   belongs_to :user
   belongs_to :engineering_lab

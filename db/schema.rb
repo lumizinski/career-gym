@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_09_190000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_10_143000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -43,6 +43,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_09_190000) do
     t.index ["training_item_id"], name: "index_engineering_labs_on_training_item_id", unique: true, where: "(training_item_id IS NOT NULL)"
     t.index ["user_id", "status"], name: "index_engineering_labs_on_user_id_and_status"
     t.index ["user_id"], name: "index_engineering_labs_on_user_id"
+  end
+
+  create_table "proof_of_works", force: :cascade do |t|
+    t.datetime "completed_at", null: false
+    t.datetime "created_at", null: false
+    t.text "description", null: false
+    t.bigint "engineering_lab_id", null: false
+    t.string "proof_type", null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.string "url"
+    t.bigint "user_id", null: false
+    t.index ["engineering_lab_id", "proof_type"], name: "index_proof_of_works_on_engineering_lab_id_and_proof_type"
+    t.index ["engineering_lab_id"], name: "index_proof_of_works_on_engineering_lab_id"
+    t.index ["user_id", "completed_at"], name: "index_proof_of_works_on_user_id_and_completed_at"
+    t.index ["user_id"], name: "index_proof_of_works_on_user_id"
   end
 
   create_table "role_skills", force: :cascade do |t|
@@ -122,6 +138,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_09_190000) do
   add_foreign_key "engineering_labs", "skills"
   add_foreign_key "engineering_labs", "training_items", on_delete: :nullify
   add_foreign_key "engineering_labs", "users"
+  add_foreign_key "proof_of_works", "engineering_labs"
+  add_foreign_key "proof_of_works", "users"
   add_foreign_key "role_skills", "roles"
   add_foreign_key "role_skills", "skills"
   add_foreign_key "training_items", "skills"

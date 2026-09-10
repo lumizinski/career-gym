@@ -111,7 +111,7 @@ RSpec.describe "Proof of work", type: :request do
 
       expect(response).to redirect_to(proof_of_work_path(proof))
       expect(proof.reload.title).to eq("Updated proof")
-      expect(proof).to be_technical_article
+      expect(proof.proof_type).to eq("technical_article")
     end
 
     it "prevents updating another user's proof" do
