@@ -176,4 +176,22 @@ RSpec.describe CareerFocus, type: :model do
     expect(progress[:labs_completed_count]).to eq(0)
     expect(progress[:proof_of_work_count]).to eq(0)
   end
+
+  it "counts proof of work only from completed labs" do
+    profile = create(:career_profile, user: user, target_role: "Staff Backend Engineer")
+    role = create(:role, title: profile.target_role)
+    skill = create(:skill, name: "System Design", category: "Architecture")
+    create(:role_skill, role: role, skill: skill, required_level: 8, importance: "Critical")
+    create(:user_skill, user: user, skill: skill, level: 2, confidence: 3)
+
+    completed_lab = create(:engineering_lab, user: user, skill: skill, status: :completed)
+    in_progress_lab = create(:engineering_lab, user: user, skill: skill, status: :in_progress)
+    create(:proof_of_work, user: user, engineering_lab: completed_lab)
+    build(:proof_of_work, user: user, engineering_lab: in_progress_lab).save!(validate: false)
+
+    progress = focus.progress_for(focus.top_skill)
+
+    expect(progress[:labs_completed_count]).to eq(1)
+    expect(progress[:proof_of_work_count]).to eq(1)
+  end
 end

@@ -144,7 +144,7 @@ class CareerFocus
   end
 
   def proof_counts
-    @proof_counts ||= user.proof_of_works.joins(:engineering_lab).group("engineering_labs.skill_id").count
+    @proof_counts ||= user.proof_of_works.joins(:engineering_lab).where(engineering_labs: { status: EngineeringLab.statuses[:completed] }).group("engineering_labs.skill_id").count
   end
 
   def user_skill_confidence
