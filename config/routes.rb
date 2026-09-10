@@ -14,7 +14,9 @@ Rails.application.routes.draw do
   resources :training_items, only: :update
   resources :labs, only: %i[index show new create edit update] do
     patch :complete, on: :member
+    resources :proof_of_works, path: "proof_of_work", only: %i[new create]
   end
+  resources :proof_of_works, path: "proof_of_work", only: %i[index show edit update destroy]
 
   get "up" => "rails/health#show", as: :rails_health_check
 end

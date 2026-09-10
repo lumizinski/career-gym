@@ -37,6 +37,8 @@ class UserSkillsController < ApplicationController
         pending: labs.pending.count
       }
       @latest_engineering_lab = labs.includes(:skill).order(updated_at: :desc, id: :desc).first
+      @proof_of_work_count = current_user.proof_of_works.count
+      @proof_of_work_type_counts = current_user.proof_of_works.group(:proof_type).count
       render "career_dashboards/show", status: :unprocessable_content
     end
   end

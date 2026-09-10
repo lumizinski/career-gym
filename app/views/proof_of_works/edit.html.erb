@@ -1,0 +1,16 @@
+<% content_for :title, "Edit Proof of Work" %>
+
+<section class="dashboard-hero">
+  <p class="dashboard-eyebrow">Career Gym</p>
+  <h1>Edit Proof of Work</h1>
+  <p class="dashboard-trajectory"><%= @proof_of_work.title %></p>
+</section>
+
+<section class="dashboard-panel">
+  <p><strong>Skill:</strong> <%= @proof_of_work.skill.name %></p>
+  <p><strong>Lab:</strong> <%= @proof_of_work.engineering_lab.title %></p>
+</section>
+
+<section class="dashboard-panel">
+  <%= render "form", proof_of_work: @proof_of_work, url: proof_of_work_path(@proof_of_work), submit_label: "Save" %>
+</section>
