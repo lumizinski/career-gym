@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   root "career_dashboards#show"
   get "dashboard", to: "career_dashboards#show", as: :career_dashboard
+  get "focus", to: "weekly_focus#show", as: :focus
   resource :career_profile, only: %i[show new create edit update]
   resources :user_skills, only: %i[create edit update]
 

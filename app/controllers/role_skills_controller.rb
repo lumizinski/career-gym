@@ -9,7 +9,7 @@ class RoleSkillsController < ApplicationController
   end
 
   def new
-    @role_skill = RoleSkill.new
+    @role_skill = RoleSkill.new(role_skill_prefill_params)
   end
 
   def edit
@@ -46,5 +46,9 @@ class RoleSkillsController < ApplicationController
 
   def role_skill_params
     params.expect(role_skill: [ :role_id, :skill_id, :required_level, :importance ])
+  end
+
+  def role_skill_prefill_params
+    params.fetch(:role_skill, {}).permit(:role_id)
   end
 end
