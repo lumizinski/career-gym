@@ -1,0 +1,85 @@
+<% content_for :title, "Weekly Focus" %>
+
+<section class="dashboard-hero">
+  <p class="dashboard-eyebrow">Career Gym</p>
+  <h1>YOUR WEEKLY FOCUS</h1>
+  <p class="dashboard-trajectory"><%= @focus.week_range_label %></p>
+  <% if @focus.target_role.present? %>
+    <p>Your target: <strong><%= @focus.target_role %></strong></p>
+  <% end %>
+</section>
+
+<section class="dashboard-panel focus-panel">
+  <% if @focus.target_role.blank? %>
+    <p>Set your career target role to generate this week’s focus.</p>
+    <p><%= link_to "Create Career Profile", new_career_profile_path, class: "dashboard-link" %></p>
+  <% elsif !@focus.required_skills? %>
+    <p>Add role skill requirements for your target role to generate focus priorities.</p>
+    <p><%= link_to "Manage Role Skills", role_skills_path, class: "dashboard-link" %></p>
+  <% elsif @focus.skills.empty? %>
+    <p>No active skill gaps this week. Keep executing your plan and reassess your skill levels.</p>
+    <p><%= link_to "View Dashboard", career_dashboard_path, class: "dashboard-link" %></p>
+  <% else %>
+    <% @focus.skills.each_with_index do |priority_skill, index| %>
+      <% progress = @focus.progress_for(priority_skill) %>
+      <% pending_items = @focus.training_items_for(priority_skill) %>
+
+      <article class="focus-skill-card">
+        <h2>#<%= index + 1 %> <%= priority_skill.skill.name %></h2>
+        <p><%= priority_skill.current_level %>/10 → <%= priority_skill.target_level %>/10</p>
+        <p><strong>Priority:</strong> <%= priority_skill.priority_label %></p>
+        <p><strong>Why?</strong> <%= priority_skill.reason %></p>
+
+        <dl class="skill-gap-metrics">
+          <div>
+            <dt>Skill</dt>
+            <dd><%= priority_skill.current_level %>/10</dd>
+          </div>
+          <div>
+            <dt>Target</dt>
+            <dd><%= priority_skill.target_level %>/10</dd>
+          </div>
+          <div>
+            <dt>Gap</dt>
+            <dd><%= priority_skill.gap %></dd>
+          </div>
+        </dl>
+
+        <h3>This week</h3>
+        <% if pending_items.any? %>
+          <ul class="training-item-list">
+            <% pending_items.each do |item| %>
+              <li>
+                <span>
+                  <%= item.in_progress? ? "◐" : "☐" %>
+                  <strong><%= item.title %></strong>
+                </span>
+                <div class="training-item-actions">
+                  <%= button_to "Complete", training_item_path(item), method: :patch, params: { training_item: { status: :completed } }, class: "dashboard-button" %>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p>No training activities yet.</p>
+          <p><%= link_to "Create Training Item", training_index_path, class: "dashboard-link" %></p>
+        <% end %>
+
+        <dl class="skill-gap-metrics">
+          <div>
+            <dt>Training</dt>
+            <dd><%= progress[:training_items_completed_count] %>/<%= progress[:training_items_count] %> completed</dd>
+          </div>
+          <div>
+            <dt>Labs</dt>
+            <dd><%= pluralize(progress[:labs_completed_count], "completed lab") %></dd>
+          </div>
+          <div>
+            <dt>Proof</dt>
+            <dd><%= pluralize(progress[:proof_of_work_count], "piece of evidence") %></dd>
+          </div>
+        </dl>
+      </article>
+    <% end %>
+  <% end %>
+</section>

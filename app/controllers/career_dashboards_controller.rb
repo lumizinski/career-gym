@@ -3,6 +3,7 @@ class CareerDashboardsController < ApplicationController
 
   def show
     @analysis = SkillGapAnalysis.new(current_user)
+    @weekly_focus = CareerFocus.new(current_user)
     @career_profile = current_user.career_profile
     @user_skills = current_user.user_skills.dashboard_order.to_a
     @skills_by_category = @user_skills.group_by { |user_skill| user_skill.skill.category }
@@ -17,6 +18,8 @@ class CareerDashboardsController < ApplicationController
     @latest_engineering_lab = current_user.engineering_labs.includes(:skill).order(updated_at: :desc, id: :desc).first
     @proof_of_work_count = current_user.proof_of_works.count
     @proof_of_work_type_counts = current_user.proof_of_works.group(:proof_type).count
+    @top_focus_skill = @weekly_focus.top_skill
+    @top_focus_remaining_training_items = @top_focus_skill.present? ? @weekly_focus.pending_training_items_count_for(@top_focus_skill) : 0
 
     @user_skill = current_user.user_skills.build
     @available_skills = Skill.where.not(id: current_user.user_skills.select(:skill_id)).order(:category, :name)

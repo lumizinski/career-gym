@@ -68,6 +68,30 @@ RSpec.describe "CareerDashboard", type: :request do
     expect(response.body).to include("Continue Training")
   end
 
+  it "shows this week panel with top focus priority skill" do
+    user = create(:user)
+    profile = create(:career_profile, user: user, target_role: "Staff Backend Engineer")
+    role = create(:role, title: profile.target_role)
+    system_design = create(:skill, name: "System Design", category: "Architecture")
+
+    create(:role_skill, role: role, skill: system_design, required_level: 8, importance: "Critical")
+    create(:user_skill, user: user, skill: system_design, level: 2, confidence: 3)
+
+    plan = create(:training_plan, user: user)
+    create(:training_item, training_plan: plan, skill: system_design, status: :in_progress, position: 1)
+    create(:training_item, training_plan: plan, skill: system_design, status: :pending, position: 2)
+
+    sign_in user
+    get "/dashboard"
+
+    expect(response).to have_http_status(:ok)
+    expect(response.body).to include("THIS WEEK")
+    expect(response.body).to include("Focus on <strong>System Design</strong>")
+    expect(response.body).to include("2/10 → 8/10")
+    expect(response.body).to include("2 training activities remaining")
+    expect(response.body).to include("View Weekly Focus")
+  end
+
   it "shows engineering lab summary and latest lab" do
     user = create(:user)
     postgres = create(:skill, name: "PostgreSQL", category: "Database")

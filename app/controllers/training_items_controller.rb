@@ -4,9 +4,9 @@ class TrainingItemsController < ApplicationController
 
   def update
     if @training_item.update(training_item_params)
-      redirect_to training_index_path, notice: "Training item updated."
+      redirect_back fallback_location: training_index_path, notice: "Training item updated."
     else
-      redirect_to training_index_path, alert: @training_item.errors.full_messages.to_sentence
+      redirect_back fallback_location: training_index_path, alert: @training_item.errors.full_messages.to_sentence
     end
   end
 

@@ -38,6 +38,20 @@
 </section>
 
 <div class="dashboard-grid">
+<section class="dashboard-panel" id="this-week">
+  <h2>THIS WEEK</h2>
+
+  <% if @top_focus_skill.present? %>
+    <p>🎯 Focus on <strong><%= @top_focus_skill.skill.name %></strong></p>
+    <p><%= @top_focus_skill.current_level %>/10 → <%= @top_focus_skill.target_level %>/10</p>
+    <p><%= pluralize(@top_focus_remaining_training_items, "training activity") %> remaining</p>
+    <p><%= link_to "View Weekly Focus", focus_path, class: "dashboard-link" %></p>
+  <% else %>
+    <p>Set your target role and skill requirements to get your weekly focus.</p>
+    <p><%= link_to "View Weekly Focus", focus_path, class: "dashboard-link" %></p>
+  <% end %>
+</section>
+
 <section class="dashboard-panel" id="career-profile">
   <h2>Career Profile</h2>
 

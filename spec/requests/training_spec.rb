@@ -57,6 +57,17 @@ RSpec.describe "Training", type: :request do
       expect(item.reload).to be_completed
     end
 
+    it "redirects back to weekly focus when completion is triggered there" do
+      user = create(:user)
+      item = create(:training_item, training_plan: create(:training_plan, user: user), status: :in_progress)
+
+      sign_in user
+      patch training_item_path(item), params: { training_item: { status: :completed } }, headers: { "HTTP_REFERER" => focus_path }
+
+      expect(response).to redirect_to(focus_path)
+      expect(item.reload).to be_completed
+    end
+
     it "updates status to in progress" do
       user = create(:user)
       item = create(:training_item, training_plan: create(:training_plan, user: user), status: :pending)
