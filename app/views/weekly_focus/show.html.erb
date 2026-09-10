@@ -55,7 +55,7 @@
                   <strong><%= item.title %></strong>
                 </span>
                 <div class="training-item-actions">
-                  <%= button_to "Complete", training_item_path(item), method: :patch, params: { training_item: { status: :completed } }, class: "dashboard-button" %>
+                  <%= button_to "Complete", training_item_path(item), method: :patch, params: { training_item: { status: :completed }, return_to: focus_path }, class: "dashboard-button" %>
                 </div>
               </li>
             <% end %>
