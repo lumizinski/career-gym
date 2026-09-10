@@ -53,8 +53,8 @@
   <h2>Proof of Work</h2>
 
   <% if @lab.completed? %>
-    <% if @lab.proof_of_works.any? %>
-      <% @lab.proof_of_works.recent_first.each do |proof| %>
+    <% if @proof_of_works.any? %>
+      <% @proof_of_works.each do |proof| %>
         <article>
           <p>✓ <strong><%= proof.proof_type_label %></strong></p>
           <p><%= proof.title %></p>

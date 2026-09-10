@@ -11,6 +11,7 @@ class LabsController < ApplicationController
   def show
     @current_skill_level = current_user.user_skills.find_by(skill_id: @lab.skill_id)&.level || 0
     @target_skill_level = target_role_skill&.required_level
+    @proof_of_works = @lab.proof_of_works.recent_first
   end
 
   def new

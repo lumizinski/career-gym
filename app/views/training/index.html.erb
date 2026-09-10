@@ -37,6 +37,7 @@
       <ul class="training-item-list">
         <% group[:items].each do |item| %>
           <% lab = item.engineering_lab %>
+          <% proofs = lab&.proof_of_works&.to_a || [] %>
           <li>
             <span>
               <% if item.completed? %>
@@ -68,7 +69,7 @@
             <% if lab&.completed? %>
               <div>
                 <p><strong>Proof:</strong></p>
-                <% if lab.proof_of_works.any? %>
+                <% if proofs.any? %>
                   <p>✓ Evidence attached</p>
                 <% else %>
                   <p>⚠ No evidence yet</p>

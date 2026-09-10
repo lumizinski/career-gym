@@ -1,3 +1,9 @@
+<% selected_proof_type = proof_of_work.read_attribute_before_type_cast(:proof_type) %>
+<% title_invalid = proof_of_work.errors[:title].any? %>
+<% proof_type_invalid = proof_of_work.errors[:proof_type].any? %>
+<% description_invalid = proof_of_work.errors[:description].any? %>
+<% url_invalid = proof_of_work.errors[:url].any? %>
+
 <%= form_with model: proof_of_work, url: url do |form| %>
   <% if proof_of_work.errors.any? %>
     <div class="dashboard-errors">
@@ -11,22 +17,34 @@
 
   <div>
     <%= form.label :title, class: "dashboard-label" %>
-    <%= form.text_field :title %>
+    <%= form.text_field :title, aria: { invalid: title_invalid, describedby: ("proof_of_work_title_error" if title_invalid) } %>
+    <% if title_invalid %>
+      <p id="proof_of_work_title_error"><%= proof_of_work.errors[:title].to_sentence %></p>
+    <% end %>
   </div>
 
   <div>
     <%= form.label :proof_type, "Type", class: "dashboard-label" %>
-    <%= form.select :proof_type, options_for_select(ProofOfWork.proof_type_options, proof_of_work.proof_type), prompt: "Select proof type" %>
+    <%= form.select :proof_type, options_for_select(ProofOfWork.proof_type_options, selected_proof_type), { prompt: "Select proof type" }, aria: { invalid: proof_type_invalid, describedby: ("proof_of_work_proof_type_error" if proof_type_invalid) } %>
+    <% if proof_type_invalid %>
+      <p id="proof_of_work_proof_type_error"><%= proof_of_work.errors[:proof_type].to_sentence %></p>
+    <% end %>
   </div>
 
   <div>
     <%= form.label :description, class: "dashboard-label" %>
-    <%= form.text_area :description, rows: 5 %>
+    <%= form.text_area :description, rows: 5, aria: { invalid: description_invalid, describedby: ("proof_of_work_description_error" if description_invalid) } %>
+    <% if description_invalid %>
+      <p id="proof_of_work_description_error"><%= proof_of_work.errors[:description].to_sentence %></p>
+    <% end %>
   </div>
 
   <div>
     <%= form.label :url, "URL", class: "dashboard-label" %>
-    <%= form.url_field :url, placeholder: "https://example.com/evidence" %>
+    <%= form.url_field :url, placeholder: "https://example.com/evidence", aria: { invalid: url_invalid, describedby: ("proof_of_work_url_error" if url_invalid) } %>
+    <% if url_invalid %>
+      <p id="proof_of_work_url_error"><%= proof_of_work.errors[:url].to_sentence %></p>
+    <% end %>
     <p>Optional. Add a public link if your evidence is hosted online.</p>
   </div>
 
