@@ -12,7 +12,13 @@ RSpec.describe CareerFocus, type: :model do
   end
 
   it "returns no priorities when the user has no target role" do
-    create(:career_profile, user: user, target_role: nil)
+    user.build_career_profile(
+      current_role: "Senior Backend Engineer",
+      years_of_experience: 8,
+      target_role: nil,
+      target_market: "International Remote",
+      goals: "Grow into a staff engineer role"
+    )
 
     expect(focus.target_role).to be_nil
     expect(focus.required_skills?).to be(false)
